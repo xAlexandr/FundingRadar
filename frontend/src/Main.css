@@ -1,0 +1,1140 @@
+/* Основной стиль для страницы */
+body {
+    background-color: #243036;
+    color: #c2c2c2;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Контейнер главной страницы */
+.home-container {
+    padding: 15px 15px 0px 15px;
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку для всей страницы */
+    max-width: 730px;
+}
+
+/* Панель фильтров (выбор монеты и типа рынка) */
+.top-bar {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    
+    /* justify-content: start; */
+    margin-bottom: 20px;
+    
+}
+
+/* Нижняя панель: выбор биржи */
+.filters-markets {
+    display: flex;
+    gap: 10px;
+    width: 100%; /* Растягиваем */
+    margin-bottom: 20px;
+}
+
+
+/* Контейнеры для отображения данных */
+.markets {
+    display: flex;
+    gap: 20px; /* Отступы между стаканами */
+    margin-bottom: 20px;
+    width: 100%;
+}
+.markets h3 {
+    margin-left: 5px;
+}
+/* Контейнер для стаканов */
+.market {
+    width: 270px; /* Ограничиваем ширину стакана */
+    background-color: #243036;
+   
+    padding: 8px 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку для контейнеров */
+}
+
+/* Контейнеры для каждой строки в стакане */
+.market-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    opacity: 0;
+    animation: fadeIn 0.01s forwards;
+    transition: background-color 0.3s ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Плавное появление при обновлении данных */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Стиль для цен */
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1; /* Позволяет цене занимать больше места */
+}
+
+/* Анимация моргания для цен только при изменении */
+.price.flicker {
+    animation: flicker 0.1s infinite;
+}
+
+/* Анимация моргания */
+@keyframes flicker {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Стиль для объемов */
+.volume {
+    font-weight: bold;
+    color: #bbb;
+    
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: auto; /* Выравнивание объема по правому краю */
+    text-align: right; /* Выравнивание текста по правому краю */
+    flex-shrink: 0; /* Не даем объему сжаться */
+}
+.markets-graph .asks .volume {
+    /* color: #21d95e; */
+    color: #EF454A;
+}
+.markets-graph .bids .volume {
+    color: #22c057;
+}
+/* Зеленые и красные цвета для ASK и BID */
+.market-container.asks {
+    background-color: rgba(255, 0, 0, 0.1);
+    
+    color: #FF4500;
+}
+
+.market-container.bids {
+    background-color: rgba(0, 128, 0, 0.1);
+    color: #32CD32;
+}
+
+/* Стиль для изменения цвета при наведении на строки стакана */
+.market-container:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Сообщение об ошибке */
+.error {
+    color: red;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Горизонтальная прокрутка для длинных строк */
+.scrollable {
+    white-space: nowrap;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+
+
+@media (max-width: 768px) {
+    .market-container {
+        display: flex;
+        flex-wrap: wrap; /* Разрешаем перенос на новую строку */
+    }
+
+    .price,
+    .volume {
+        width: calc(50% - 10px); /* Цена и объем будут занимать половину доступного пространства */
+    }
+
+    .price {
+        font-size: 18px; /* Увеличиваем размер цены */
+    }
+
+    .volume {
+        font-size: 18px; /* Увеличиваем размер объема */
+    }
+
+    .market-container {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .market {
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .price {
+        font-size: 14px;
+    }
+
+    .volume {
+        font-size: 14px;
+    }
+    .market-container-graph .price {
+        font-size: 15px;
+    }
+    .market-container-graph .volume {
+        font-size: 15px;
+    }
+    .market-container {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+/* Блок для отображения спредов */
+.spread-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    width: 150px;
+    background-color: #243036;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+   
+    color: #c2c2c2;
+    padding: 10px 24px 10px 12px;
+    border-radius: 8px;
+    font-size: 20px;
+}
+
+/* Блок для каждого спреда (вход и выход) */
+.spread-item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px 0;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+/* Цвета для положительного и отрицательного спреда */
+.spread-green {
+    color: #32CD32;
+}
+
+.spread-red {
+    color: #FF4500;
+
+}
+.spread-container-graph .spread-green {
+    color: #22c057;
+}
+.spread-container-graph .spread-red {
+    color: #EF454A;
+}
+/* Стиль для надписей (вход и выход) */
+.spread-item span {
+    font-weight: bold;
+    text-align: left;
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+/* Выравнивание значений спредов */
+.spread-item .spread-value {
+    font-size: 18px;
+    margin-left: 10px;
+    min-width: 100px;
+    text-align: left; /* Выравнивание по левому краю */
+    flex-grow: 1; /* Расширяем элементы, чтобы они занимали все доступное пространство */
+}
+
+/* Стиль для значений спредов (вход/выход) */
+.spread-entry, .spread-exit {
+    font-weight: bold;
+    font-size: 18px;
+    margin-left: 5px;
+    min-width: 90px;
+}
+
+/* Пример для спреда входа */
+.spread-entry {
+    color: #21d95e;
+}
+
+/* Пример для спреда выхода */
+.spread-exit {
+    color: #EF454A;
+}
+
+/* Стили для всех селектов и инпутов */
+.coin-select, .sp-ft-select, .market-select, .coin-input {
+   
+    background-color: #243036;
+    border: 1px solid #126783;
+    color: #c2c2c2;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 50%; /* Растягиваем элементы */
+    min-width: 150px; /* Минимальная ширина */
+    flex-grow: 1; /* Даем возможность адаптивного растяжения */
+}
+
+.coin-input {
+    width: calc(100% - 20px);
+    min-height: 19px;
+    min-width: 128px;
+    flex-grow: 1;
+    
+}
+.coin-input:focus, .sp-ft-select:focus, .market-select:focus {
+    border-color: #1994bd;
+    outline: none;
+  }
+.autocomplete {
+    position: relative;
+    width: 50%;
+    min-width: 150px;
+    flex-grow: 1;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #243036;
+    border: 1px solid #444;
+    border-radius: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 9999; /* Сделаем его самым верхним */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown li {
+    padding: 10px;
+    cursor: pointer;
+    color: #c2c2c2;
+}
+
+.dropdown li:hover {
+    background: #333;
+}
+/* Стиль для графика */
+canvas {
+    
+    border-radius: 8px;
+    background-color: #1d1d1d;
+    margin-bottom: 100px;
+    width: 100%;
+    max-width: 600px;
+
+  }
+  .first {
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .time-label {
+    font-size: 14px;
+    color: #c2c2c2;
+    margin-top: 10px;
+    
+  }
+.toggle-button {
+    width: 35px;
+    height: 35px;
+    margin-right: 20px;
+    /* background-color: #243036; */
+    background: linear-gradient(145deg, #212d33, #243036);
+    
+    transition: all 0.2s ease-in-out;
+    border: 1px solid #126783;
+    border-radius: 5px;
+    color: #1994bd;
+    font-size: 14px;   
+}
+.toggle-button:active,
+.toggle-button-depth:active {
+    background: linear-gradient(145deg, #243036, #1e292f);
+   
+}
+
+.depth-block {
+    margin-top: -1px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.div-graph {
+    position: relative;
+    max-width: 760px;
+}
+.func-div {
+    position: relative;
+    display: flex; 
+    max-width: 600px;
+    padding-bottom: 25px;
+    
+    justify-content: space-between;
+    width: 100%;
+}
+/* Контейнеры для отображения данных */
+.markets-graph {
+    display: flex;
+    position: absolute;
+    gap: 10px; /* Отступы между стаканами */
+    border-radius: 5px;
+    left: 10px;
+    top: 180px;
+    width: 84%;
+    max-width: 480px;
+    
+}
+.markets-graph h3 {
+    margin-left: 10px;
+    margin-bottom: 5px;
+    margin-top: 0;
+    font-size: 20px;
+}
+/* Контейнер для стаканов */
+.market-graph {
+    width: 270px; /* Ограничиваем ширину стакана */
+    background-color: rgba(29, 29, 29, 0.2);
+    
+    padding: 5px 0;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку для контейнеров */
+}
+.market-graph:first-child h3 {
+    color: #22c057;
+}
+.market-graph:last-child h3 {
+    color: #EF454A;
+}
+/* Clickable exchange name links */
+.market-link-exchange {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+.market-link-exchange:hover {
+    opacity: 0.75;
+    text-decoration: underline;
+}
+/* Контейнеры для каждой строки в стакане */
+.market-container-graph {
+    display: flex;
+    justify-content: space-between;
+    
+    padding: 2px 8px;
+    border-radius: 5px;
+    opacity: 0;
+    animation: fadeIn 0.05s forwards;
+    transition: background-color 0.3s ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* Зеленые и красные цвета для ASK и BID */
+.market-container-graph.asks {
+    background-color: rgba(0, 128, 0, 0);
+    color: #EF454A;
+}
+
+.market-container-graph.bids {
+    background-color: rgba(255, 0, 0, 0);
+    color: #22c057;
+}
+.spread-container-graph .spread-item span:first-child {
+    color: #c2c2c2c0;
+}
+/* Стиль для изменения цвета при наведении на строки стакана */
+/* .market-container-graph:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+} */
+/* Блок для отображения спредов */
+.spread-container-graph {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    width: 160px;
+    height: 100%;
+    max-height: 70px;
+    top: 2%;
+    float: center;
+    background-color: rgba(29, 29, 29, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #c2c2c2;
+    padding: 10px 24px 10px 12px;
+    border-radius: 8px;
+    font-size: 22px;
+    z-index: 100;
+}
+@media (max-width: 1920px) { 
+    .spread-container-graph {
+        float: center;
+        margin-left: 29%;
+        }
+    .markets-graph {
+        top: 52%;
+    }
+    .markets-graph.x5 {
+        top: 35%;
+    }
+
+}
+@media (max-width: 750px) { 
+    .spread-container-graph {
+        float: center;
+        margin-left: 29%;
+        }
+    .markets-graph {
+        top: 50%;
+    }
+    .markets-graph.x5 {
+        top: 35%;
+    }
+
+}
+@media (max-width: 670px) { 
+    .spread-container-graph {
+        float: center;
+        margin-left: 29vw;
+        }
+    .markets-graph {
+        top: 44%;
+    }
+    .markets-graph.x5 {
+        top: 30%;
+    }
+}
+@media (max-width: 480px) { 
+    .spread-container-graph {
+        float: center;
+        margin-left: 24vw;
+        }
+    .markets-graph {
+        top: 42%;
+    }
+    .markets-graph.x5 {
+        top: 30%;
+    }
+}
+@media (max-width: 380px) { 
+    .spread-container-graph {
+        float: center;
+        margin-left: 23vw;
+        }
+    .markets-graph {
+        top: 35%;
+    }
+    .markets-graph.x5 {
+        top: 30%;
+    }
+}
+@media (max-width: 350px) { 
+    .spread-container-graph {
+    float: center;
+    margin-left: 19vw;
+    }
+    .markets-graph {
+        top: 32%;
+    }
+    .markets-graph.x5 {
+        top: 30%;
+    }
+}
+
+/* Блок для каждого спреда (вход и выход) */
+.spread-container-graph .spread-item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px 0;
+    margin-bottom: 5px;
+    align-items: center;
+}
+/* Стиль для надписей (вход и выход) */
+.spread-container-graph .spread-item span {
+    font-weight: bold;
+    text-align: left;
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+/* Выравнивание значений спредов */
+.spread-container-graph .spread-item .spread-value {
+    font-size: 20px;
+    margin-left: 10px;
+    min-width: 120px;
+    text-align: left; /* Выравнивание по левому краю */
+    flex-grow: 1; /* Расширяем элементы, чтобы они занимали все доступное пространство */
+}
+.volume-input {
+    text-align: left;
+    
+    margin-left: 10px;
+    max-width: 55px; /* Длина поля */
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #126783;
+    background-color: #243036;
+    color: #c2c2c2;
+    font-size: 16px;
+  }
+
+  .volume-input:focus {
+    border-color: #1994bd;
+    outline: none;
+  }
+
+.span-value {
+   margin-left: 15px;
+    align-self: center;
+}
+.subscription-message {
+    position: absolute;
+    color: #1994bd; /* Вы можете изменить стиль в соответствии с дизайном */
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    justify-self: center;
+  }
+
+
+.error-center-container {
+    margin: 100px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.error-subscription-container {
+    display: flex;
+    align-items: center;
+    background-color: #1e282e; /* Темнее фона страницы */
+    padding: 20px;
+
+    border-radius: 6px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 387px; /* Опционально, чтобы не растягивался */
+    margin: 0 5%;
+}
+
+.error-subscription-icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 15px;
+    opacity: 0.8;
+}
+
+.error-subscription-text {
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.error-subscription-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.error-subscription-description {
+    font-size: 14px;
+    color: #c2c2c2;
+
+    text-align: center;
+}
+/* КНОПКИ ВХОДА ВЫХОДА СТИЛИ */
+.spread-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+}
+.func-div.func-mb {
+    padding-bottom: 15px;
+}
+.spread-inner {
+    position: absolute;
+    z-index: 500;
+    top: 0;
+    margin-left: 3px;
+    opacity: 0.5;
+}
+
+.spread-inner-plus {
+    position: absolute;
+    z-index: 500;
+    top: 0;
+    margin-top: 45px;
+    margin-left: 3px;
+    opacity: 0.5;
+}
+
+.ml-spread {
+    margin-left: 15px;
+}
+.mr-spread {
+    margin-right: 15px;
+}
+.spread-input-block {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    display: flex;
+    
+}
+.spread-input:first-child {
+    margin-right: 5px;
+}
+.spread-input {
+    max-width: 77px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #126783;
+    background-color: #243036;
+    color: #c2c2c2;
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.spread-input:focus {
+    border-color: #1994bd;
+    outline: none;
+}
+.spread-gap {
+    gap: 15px;
+}
+
+.spread-toggle {
+    margin-top: 10px;
+}
+.spread-subtitle {
+    margin-left: 15px;
+    font-size: 16px;
+    color: #c2c2c2;
+}
+.spread-subtitle.ml-0 {
+    margin-left: 0px;
+}
+.graph-div2 {
+    position: relative;
+}
+.history-inner {
+    position: absolute;
+    z-index: 500;
+    top: 0;
+    margin-left: 3px;
+    opacity: 0.4;
+}
+.history-inner.active {
+    opacity: 0.6;
+}
+.alert-bell {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    float: right;
+    color: #c2c2c2;
+    margin-right: 20px;
+    filter: grayscale(0%) invert(20%) sepia(0%) saturate(500%) hue-rotate(180deg);
+    transition: filter 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+    opacity: 0.7;
+  }
+  
+.alert-bell:hover {
+  opacity: 1;
+  color: #1994bd;
+}
+
+.alert-bell.active {
+  color: #22c057;
+  opacity: 1;
+}
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }
+  
+ 
+  
+
+
+  .alert-input-block input {
+    background: #243036;
+    border: 1px solid #126783;
+    color: #c2c2c2;
+    padding: 5px;
+    border-radius: 5px;
+    font-size:16px;
+    width: 60%;
+    
+  }
+  .toggle-depth-button {
+    margin-right: 10px;
+  }
+  .alert-input-block label {
+     display: flex;
+       
+        align-items: center;
+        gap: 8px;
+        margin-top: 5px;
+  }
+  .alert-input-block input:focus {
+    border-color: #1994bd;
+    outline: none;
+}
+  .close-modal {
+    background: #126783;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+
+
+  .close-modal-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #c2c2c2;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+  
+  .close-modal-button:hover {
+    opacity: 1;
+  }
+  .modal-content {
+    position: absolute;
+    top: 50px; /* Подстрой под свое расположение */
+    left: 50px; /* Подстрой под свое расположение */
+    background: #243036;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    color: #c2c2c2;
+    width: 130px;
+  }
+  
+  .alert-button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #126783;
+  border-radius: 5px;
+  background: #212d33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: border 0.3s ease, background 0.3s ease;
+}
+.alert-button {
+  position: relative;
+  overflow: hidden; /* чтобы ripple не вылазил за края */
+}
+
+.alert-button:active::after {
+  transform: scale(2.5);
+  opacity: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(2.5);
+}
+.alert-button span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #444, #222); /* серый градиент для OFF */
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.alert-button.on span {
+  background: radial-gradient(circle at 30% 30%, #33ccff, #0066cc);
+  transform: scale(1.1);
+}
+
+.alert-button.off span {
+  background: linear-gradient(145deg, #555, #222);
+  transform: scale(0.95);
+}
+
+
+
+
+/*  КНОПКИ */
+
+ .func-div .toggle-button {
+  width: 35px;
+  height: 35px;
+  border: 1px solid #126783;
+  border-radius: 5px;
+  background: #212d33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: border 0.3s ease, background 0.3s ease;
+}
+.func-div .toggle-button {
+  position: relative;
+  overflow: hidden; /* чтобы ripple не вылазил за края */
+}
+
+.func-div .toggle-button:active::after {
+  transform: scale(2.5);
+  opacity: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(2.5);
+}
+.func-div .toggle-button span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #444, #222); /* серый градиент для OFF */
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.func-div .toggle-button.on span {
+  background: radial-gradient(circle at 30% 30%, #33ccff, #0066cc);
+  transform: scale(1.1);
+}
+
+.func-div .toggle-button.off span {
+  background: linear-gradient(145deg, #555, #222);
+  transform: scale(0.95);
+}
+
+
+
+ .func-div  .toggle-button-depth {
+  width: 35px;
+  height: 35px;
+  border: 1px solid #126783;
+  margin-left: 15px;
+  border-radius: 5px;
+  background: #212d33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: border 0.3s ease, background 0.3s ease;
+}
+.func-div .toggle-button-depth {
+  position: relative;
+  overflow: hidden; /* чтобы ripple не вылазил за края */
+}
+
+.func-div .toggle-button-depth:active::after {
+  transform: scale(2.5);
+  opacity: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(2.5);
+}
+.func-div .toggle-button-depth span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #444, #222); /* серый градиент для OFF */
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.func-div .toggle-button-depth.on span {
+  background: radial-gradient(circle at 30% 30%, #33ccff, #0066cc);
+  transform: scale(1.1);
+}
+
+.func-div .toggle-button-depth.off span {
+  background: linear-gradient(145deg, #555, #222);
+  transform: scale(0.95);
+}
+
+.sub-button {
+    padding: 10px 14px;
+    text-decoration: none;
+    background: #1994bd;
+    align-self: center;
+    align-items: center;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .sub-button:hover {
+    background: #137ea2;
+  }
+  
+  
+  .sub-button:hover {
+    background-color: #007acc;
+  }
+.coin2-toggle-block {
+    margin-left: auto;
+    margin-right: 0px;
+}
+
+.loading-center-container {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:40px;
+  color: #666;
+}
+.loader {
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  border:4px solid rgba(0,0,0,0.08);
+  border-top-color: rgba(0,0,0,0.5);
+  animation: spin 1s linear infinite;
+  margin-bottom:12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+/* DEX: только top bid — подчёркиваем и центрируем */
+.market-container-graph.dex-only {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 22%;
+  padding: 8px 6px;
+}
+
+/* цвет такой же "зелёный для bid" — поправь, если у тебя другой */
+.price.dex-price {
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+
+
+.coin-input-wrapper { position: relative; display: inline-block; }
+
+/* prefix box */
+.network-prefix {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #f3f4f6;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.85em;
+  color: #111827;
+  font-weight: 700;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.04) inset;
+}
+
+/* input when has prefix — оставляем отступ и ограничение ширины */
+.coin-input.coin-input-with-prefix {
+
+max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* адаптивы */
+@media (max-width: 600px) {
+    
+  .network-prefix { padding: 3px 6px; font-size: 0.75em; }
+}
+
+.coin-input-wrapper { position: relative; }
+.network-prefix {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #00AEEF;
+  color: black;
+  font-weight: 700;
+  pointer-events: none;
+  letter-spacing: 0.03em;
+}
+.coin-input.coin-input-with-prefix {
+  padding-left: 60px; /* подогнать под ширину network-prefix */
+}
+.coin-input-wrapper {
+  position: relative;
+  display: block; /* было inline-block, меняем на block */
+  width: 100%;    /* растягиваем по ширине родителя */
+}
+
+.coin-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.coin-input.coin-input-with-prefix {
+  padding-left: 60px; /* под префикс */
+}
+@media (max-width: 400px) {
+    .depth-block .span-value {
+        display: none;
+    }
+    .depth-block .volume-input {
+        margin-left: 15px;
+    }
+}

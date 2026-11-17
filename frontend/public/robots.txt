@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow: /trade/
+Disallow: /spreads
+Disallow: /subscription
+Disallow: /info
+
+Host: cp-bot.ru
+Sitemap: https://cp-bot.ru/sitemap.xml

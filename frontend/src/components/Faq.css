@@ -1,0 +1,250 @@
+/* src/styles/Faq.css - scoped to .landing.faq-page */
+.landing.faq-page {
+  min-height: 100vh;
+  padding: 88px 24px 80px;
+  background: linear-gradient(180deg, #162427, #0f1a1c);
+  color: #d7e7ea;
+  box-sizing: border-box;
+
+  /* переменная: базовый боковой отступ для заголовка/обёртки (можно подправить) */
+  --faq-side-offset: 24px;
+}
+
+/* Scope internal selectors to prevent leak */
+.landing.faq-page .faq-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 12px;
+  box-sizing: border-box;
+}
+
+/* ---------- NEW: adaptive header offset ----------
+   цель: при ширинах <1600px сделать заголовок не вприлипку к краю,
+   а на узких экранах уменьшить отступ обратно.
+--------------------------------------------------*/
+/* Для экранов чуть меньше больших десктопов — добавляем плавный отступ слева/справа */
+@media (max-width: 1599px) {
+  .landing.faq-page .faq-wrap {
+    /* отступы плавно зависят от ширины вьюпорта, ограничены min/max */
+    padding-left: clamp(28px, 5vw, 96px);
+    padding-right: clamp(18px, 3vw, 40px);
+  }
+
+  /* чуть уменьшить визуальный размер заголовка на широких ноутбуках */
+  .landing.faq-page .faq-header h1 {
+    font-size: 28px;
+  }
+}
+
+/* Средние и небольшие экраны — уменьшаем отступ и шрифты */
+@media (max-width: 1200px) {
+  .landing.faq-page .faq-wrap {
+    padding-left: clamp(18px, 4vw, 48px);
+    padding-right: clamp(12px, 3vw, 28px);
+  }
+  .landing.faq-page .faq-header h1 {
+    font-size: 26px;
+  }
+  .landing.faq-page .faq-header .faq-sub {
+    font-size: 14px;
+  }
+}
+
+/* На tablet/phone — вернуть компактные paddings (как и раньше) */
+@media (max-width: 980px) {
+  .landing.faq-page .faq-grid { flex-direction: column; }
+  .landing.faq-page .faq-wrap { padding: 12px; }
+  .landing.faq-page { padding-top: 72px; }
+  .landing.faq-page .faq-header h1 { font-size: 24px; }
+  .landing.faq-page .faq-header { padding-left: 8px; padding-right: 8px; }
+}
+
+/* ---------- end adaptive header offset ---------- */
+
+.landing.faq-page .faq-header {
+  text-align: left;
+  margin-bottom: 28px;
+  /* небольшая гарантия от прилипания — использую внутренние паддинги контейнера */
+  box-sizing: border-box;
+}
+.landing.faq-page .faq-header h1 {
+  color: #eaf7fb;
+  font-size: 30px;
+  margin: 0 0 8px 0;
+  font-weight: 800;
+}
+.landing.faq-page .faq-header .faq-sub {
+  color: #bcd2d7;
+  margin: 0;
+  font-size: 15px;
+}
+
+/* Новая структура: две независимые колонки (столбца) */
+.landing.faq-page .faq-grid {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start; /* колонки начинают с одной линии по верху */
+}
+
+/* каждая колонка — вертикальный стек карточек */
+.landing.faq-page .faq-col {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+/* card */
+.landing.faq-page .faq-card {
+  background: linear-gradient(180deg, rgba(14,34,36,0.85), rgba(11,22,23,0.85));
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+  overflow: hidden;
+  transition: transform .16s ease, box-shadow .18s ease;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch; /* карточка растягивается по ширине колонки */
+}
+.landing.faq-page .faq-card:hover { transform: translateY(-6px); box-shadow: 0 22px 46px rgba(0,0,0,0.6); }
+
+/* head */
+.landing.faq-page .faq-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  width:100%;
+  padding: 18px 20px;
+  background: linear-gradient(90deg, rgba(24,128,146,0.02), rgba(20,80,95,0.01));
+  border: none;
+  cursor: pointer;
+  color: #eaf7fb;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: left;
+  outline: none;
+}
+.landing.faq-page .faq-head:focus { box-shadow: 0 0 0 4px rgba(25,148,189,0.06); }
+
+.landing.faq-page .faq-title {
+  display:block;
+  text-align: left;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #eaf7fb;
+  font-weight: 700;
+  font-size: 15.5px;
+}
+
+/* arrow */
+.landing.faq-page .faq-arrow {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  transition: transform .28s cubic-bezier(.2,.9,.2,1), background .18s;
+  color: #9fd6e6;
+  flex: 0 0 auto;
+}
+.landing.faq-page .faq-arrow svg { display:block; width: 18px; height: 18px; }
+.landing.faq-page .faq-arrow.rot { transform: rotate(180deg); }
+
+/* body */
+.landing.faq-page .faq-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .44s cubic-bezier(.2,.9,.2,1), opacity .28s ease, padding .28s ease;
+  opacity: 0;
+  padding: 0 20px;
+  background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.02));
+}
+.landing.faq-page .faq-body.show {
+  opacity: 1;
+  padding: 14px 20px 20px 20px;
+  max-height: 420px;
+}
+.landing.faq-page .faq-body-inner {
+  color: #bcd2d7;
+  font-size: 14.5px;
+  line-height: 1.65;
+  word-break: break-word;
+  white-space: pre-wrap; /* сохраняет переносы в тексте, если есть */
+}
+
+/* cta */
+.landing.faq-page .faq-cta {
+  margin-top: 28px;
+  text-align: center;
+  color: #bcd2d7;
+}
+.landing.faq-page .faq-cta .btn-outline {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+/* responsive: колонки превращаются в 1 на маленьких экранах */
+@media (max-width: 980px) {
+  .landing.faq-page .faq-grid { flex-direction: column; gap: 14px; }
+  .landing.faq-page .faq-wrap { padding: 12px; }
+  .landing.faq-page { padding-top: 72px; }
+  .landing.faq-page .faq-header h1 { font-size: 24px; }
+  .landing.faq-page .faq-header .faq-sub { font-size: 14px; }
+}
+
+/* --- Quick fixes for unexpected vertical overflow on FAQ page --- */
+
+/* 1) Убедимся, что html/body корректно заданы (в идеале на уровне глобального CSS) */
+html, body {
+  height: 100%;
+}
+
+/* 2) Подстраиваем высоту .landing.faq-page относительно возможного фиксированного баннера.
+   Это предотвращает "двойной" отступ, когда у вас уже есть padding-top в layout. */
+.landing.faq-page {
+  /* если у вас используется переменная баннера — учтём её, иначе 0 */
+  --banner-h: var(--landing-banner-height, 0px);
+  min-height: calc(100vh - var(--banner-h));
+  /* уменьшаем нижний padding — большой padding-bottom мог создать лишнюю высоту */
+  padding-bottom: 48px; /* безопасное значение */
+  /* и гарантируем, что overflow контролируем */
+  overflow-x: hidden;
+  overflow-y: auto; /* явный скролл у контейнера вместо body (безопаснее) */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 3) Защитим от невидимых/абсолютных элементов, которые могут занимать место.
+   Если у вас есть .preload-img или похожие off-screen элементы — спрячем их на FAQ странице. */
+.landing.faq-page .preload-img,
+.landing.faq-page .hidden-debug,
+.landing.faq-page [data-debug-hidden="true"] {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+}
+
+/* 4) Предотвратить, что какой-то элемент даёт огромную min-height */
+.landing.faq-page * {
+  min-height: 0;
+}
+
+/* 5) Ограничим максимальную высоту основных секций (если вдруг что-то растягивает) */
+.landing.faq-page .faq-wrap {
+  max-height: calc(100vh - 120px); /* safety cap: предотвращает сверхбольшую высоту */
+  box-sizing: border-box;
+}
+
+/* 6) Защитный guard: если нет раскрытых блоков — принудительно убрать лишнюю прокрутку */
+@supports (selector(:has(*))) {
+  /* только в браузерах с :has — optional, улучшение UX */
+  .landing.faq-page:not(:has(.faq-body.show)) {
+    /* убираем возможный лишний отступ, если нет открытых панелей */
+    padding-bottom: 48px;
+    overflow-y: auto;
+  }
+}

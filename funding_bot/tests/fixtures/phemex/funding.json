@@ -1,0 +1,209 @@
+{
+  "code": 0,
+  "msg": "OK",
+  "data": {
+    "total": 496,
+    "rows": [
+      {
+        "symbol": "1INCHUSDT",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.0001",
+        "interestRate": "0.0001",
+        "fundingRateCap": "0.03",
+        "fundingRateFloor": "-0.03"
+      },
+      {
+        "symbol": "2ZUSDT",
+        "fundingInterval": 14400,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.00005",
+        "interestRate": "0.00005",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "4USDT",
+        "fundingInterval": 14400,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.00005",
+        "interestRate": "0.00005",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "AAOIUSDT",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0",
+        "interestRate": "0",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "AAPLUSDT",
+        "fundingInterval": 14400,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0",
+        "interestRate": "0",
+        "fundingRateCap": "0.0002",
+        "fundingRateFloor": "-0.0002"
+      },
+      {
+        "symbol": "AAVEUSDC",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "-0.0000563",
+        "interestRate": "0.0001",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "AAVEUSDT",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.00002309",
+        "interestRate": "0.0001",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "ACEUSDT",
+        "fundingInterval": 14400,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.00005",
+        "interestRate": "0.00005",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "ACHUSDT",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "-0.00025034",
+        "interestRate": "0.0001",
+        "fundingRateCap": "0.03",
+        "fundingRateFloor": "-0.03"
+      },
+      {
+        "symbol": "ACTUSDT",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.0001",
+        "interestRate": "0.0001",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "ACUUSDT",
+        "fundingInterval": 14400,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.00005",
+        "interestRate": "0.00005",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "ACXUSDT",
+        "fundingInterval": 14400,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.00005",
+        "interestRate": "0.00005",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "ADAUSDC",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.0001",
+        "interestRate": "0.0001",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "ADAUSDT",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "-0.00004329",
+        "interestRate": "0.0001",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "ADBEUSDT",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0",
+        "interestRate": "0",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "AERGOUSDT",
+        "fundingInterval": 14400,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.00005",
+        "interestRate": "0.00005",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "AEVOUSDT",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.0001",
+        "interestRate": "0.0001",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "AGLDUSDT",
+        "fundingInterval": 28800,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.0000117",
+        "interestRate": "0.0001",
+        "fundingRateCap": "0.03",
+        "fundingRateFloor": "-0.03"
+      },
+      {
+        "symbol": "AIGENSYNUSDT",
+        "fundingInterval": 14400,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.00002747",
+        "interestRate": "0.00005",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      },
+      {
+        "symbol": "AIOUSDT",
+        "fundingInterval": 14400,
+        "toNextfundingInterval": 12856,
+        "nextfundingTime": 1783785600000,
+        "fundingRate": "0.00178931",
+        "interestRate": "0.00005",
+        "fundingRateCap": "0.02",
+        "fundingRateFloor": "-0.02"
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    volumes:
+      - ./nginx/certs:/etc/letsencrypt
+      - ./nginx/webroot:/var/www/letsencrypt
+    networks:
+      - default
+
+networks:
+  default:
+    name: fundingweb_default
+    external: true

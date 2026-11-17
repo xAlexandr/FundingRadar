@@ -1,0 +1,241 @@
+/* Если есть необходимость убрать выделение при клике (active) */
+a:focus,
+a:active,
+button:focus,
+button:active,
+.faq-item:focus,
+.faq-item:active {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+.faq-item {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.info-container {
+    padding: 20px;
+    background-color: #243036;
+    color: #e0e0e0;
+    margin-bottom: 150px;
+    border-radius: 10px;
+}
+
+h2, h3 {
+    text-align: center;
+    
+}
+
+.info-description {
+    text-align: center;
+    font-size: 16px;
+    color: #c2c2c2;
+    margin-bottom: 20px;
+}
+
+.info-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* ✅ Позволяет элементам переноситься */
+}
+
+.info-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    font-weight: bold;
+}
+
+.youtube {
+    background-color: #EF454A;
+}
+.telegram {
+    background-color: #27a7e7;
+}
+.tiktok {
+    background-color: #222;
+}
+
+.telegraph {
+    background-color: #22c057;
+}
+
+.info-link:hover {
+    opacity: 0.8;
+}
+
+.faq-title {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.faq-container {
+    /* background: #243036; */
+    background: #1e282e;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.faq-item {
+    padding: 10px;
+    border-bottom: 1px solid #2d3a40;
+    cursor: pointer;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    color: #e0e0e0;
+}
+
+.faq-answer {
+    margin-top: 5px;
+    color: #c2c2c2;
+    font-size: 14px;
+}
+
+.faq-arrow {
+    font-size: 14px;
+    color: #1994bd;
+    /* color: #22c057; */
+}
+
+.faq-item.open .faq-arrow {
+    color: #888;
+}
+.icon {
+    font-size: 20px;
+    
+}
+.useful-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.useful-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    background-color: #1e282e;
+    color: #c2c2c2;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.useful-link:active {
+    background-color: #243036;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-5px); /* Немного вверх, чтобы красиво появлялось */
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    will-change: max-height, opacity, transform;
+}
+
+.faq-item.open .faq-answer {
+    opacity: 1;
+    transform: translateY(0); /* Возвращаем в нормальное положение */
+}
+
+.info-link.site {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  transition: 0.25s ease;
+}
+
+.info-link.site:hover {
+ 
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.site-logo {
+  width: 22px;
+  height: 22px;
+  border-radius: 0px;
+}
+.info-links {
+  transition: all 0.3s ease;
+}
+/* ✅ Когда экран становится узким — делаем ссылки в столбик */
+@media (max-width: 330px) {
+  .info-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .info-link {
+    width: 140px;
+    justify-content: center;
+  }
+}
+
+/* Info page language switcher */
+.info-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.info-header-row h2 {
+  margin: 0;
+}
+.info-lang-switch {
+  display: flex;
+  gap: 4px;
+}
+.info-lang-btn {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #126783;
+  background: #1c262b;
+  color: #c2c2c2;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.info-lang-btn.active {
+  background: linear-gradient(145deg, #1994bd, #126783);
+  color: #fff;
+  border-color: #1994bd;
+}
+.info-lang-btn:hover {
+  border-color: #1994bd;
+}

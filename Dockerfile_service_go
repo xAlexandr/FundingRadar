@@ -1,0 +1,39 @@
+# -------- STAGE 1: build --------
+FROM golang:1.22-alpine AS builder
+
+# Установим зависимости
+RUN apk add --no-cache git
+
+# Рабочая директория
+WORKDIR /app
+
+# Копируем моды
+COPY trading/go.mod trading/go.sum ./
+
+# Загрузим зависимости
+RUN go mod download
+
+# Копируем весь исходный код
+COPY trading/ .
+
+# Сборка бинарника
+RUN go build -o service service.go
+
+# -------- STAGE 2: runtime --------
+FROM alpine:latest
+
+# Сертификаты для HTTPS
+RUN apk add --no-cache ca-certificates
+
+WORKDIR /app
+
+# Копируем бинарник из builder
+COPY --from=builder /app/service /app/service
+
+# Порт (по умолчанию твой Go слушает :8081)
+EXPOSE 8081
+
+# Переменные окружения
+ENV REDIS_ADDR=redis:6379
+# Запуск
+ENTRYPOINT ["/app/service"]

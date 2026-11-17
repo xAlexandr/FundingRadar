@@ -1,0 +1,64 @@
+/* Сайдбар */
+.appnav-container {
+  width: 220px;
+  min-height: 100vh;
+  background: #1e282e;
+  border-right: 1px solid #126783;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.appnav-header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1994bd;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.appnav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.appnav-link {
+  padding: 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #c2c2c2;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.appnav-link:hover {
+  background: #243036;
+  color: #fff;
+}
+
+.appnav-link.active {
+  background: #1994bd;
+  color: #fff;
+}
+
+.appnav-lang {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.appnav-lang button {
+  background: #243036;
+  border: 1px solid #126783;
+  color: #c2c2c2;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.appnav-lang button:hover {
+  background: #1994bd;
+  color: white;
+}

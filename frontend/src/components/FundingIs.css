@@ -1,0 +1,174 @@
+/* Общий стиль */
+.landing.fundingis-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #152326 0%, #0d1719 100%);
+  color: #d7e7ea;
+  padding: 96px 20px 80px;
+  box-sizing: border-box;
+}
+
+.fundingis-wrap {
+  max-width: 1150px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* Заголовок */
+.fundingis-header {
+  text-align: center;
+}
+.fundingis-title {
+  color: #eaf7fb;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.fundingis-subtitle {
+  color: #6bc6d7;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.25s;
+}
+.fundingis-subtitle:hover {
+  color: #9feaf5;
+}
+
+/* Статья */
+.fundingis-article {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Секции */
+.funding-section {
+  background: linear-gradient(180deg, rgba(12,32,34,0.9), rgba(10,24,26,0.9));
+  border-radius: 14px;
+  padding: 24px 28px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+  transition: transform .2s ease, box-shadow .25s ease;
+}
+.funding-section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 44px rgba(0,0,0,0.6);
+}
+
+.funding-section-title {
+  font-size: 22px;
+  color: #e0f5f8;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.funding-text {
+  color: #bcd2d7;
+  font-size: 15.5px;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+/* Списки */
+.funding-list {
+  color: #bfe8ef;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 10px 0 0 16px;
+  padding-left: 20px;
+}
+.funding-list li {
+  margin-bottom: 6px;
+}
+
+/* Изображения */
+.funding-image-block {
+  margin: 16px 0;
+  text-align: center;
+}
+.funding-image {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.55);
+}
+.funding-caption {
+  color: #91b8c0;
+  font-size: 13.5px;
+  margin-top: 6px;
+}
+
+/* Ссылки */
+.fundingis-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.fundingis-link {
+  color: #8be0ec;
+  text-decoration: none;
+  border: 1px solid rgba(90,180,200,0.4);
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+}
+.fundingis-link:hover {
+  background: rgba(90,180,200,0.12);
+  border-color: rgba(120,210,230,0.7);
+  color: #c8faff;
+}
+
+/* Кнопка бота */
+.fundingis-bot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #6d0596, #028ada);
+  color: #eaf7fb;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.fundingis-bot span {
+    margin-left: 10px;
+}
+.fundingis-bot:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+}
+
+.fundingis-bot-img {
+  width: 30px;
+  height: auto;
+  border-radius: 10px;
+  transition: transform .25s;
+}
+.fundingis-bot-img:hover {
+  transform: scale(1.03);
+}
+
+/* Адаптив */
+@media (max-width: 980px) {
+  .fundingis-title {
+    font-size: 26px;
+  }
+  .funding-section {
+    padding: 20px 18px;
+  }
+  .funding-section-title {
+    font-size: 19px;
+  }
+  .funding-text {
+    font-size: 14.5px;
+  }
+  .fundingis-links {
+    flex-direction: column;
+  }
+}

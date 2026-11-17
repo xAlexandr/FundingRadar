@@ -1,0 +1,7 @@
+{
+  "created_at": "2026-07-13T10:39:34.331559",
+  "tokens_count": 656,
+  "source": "Binance Alpha API (spot only)",
+  "endpoint": "https://www.binance.com/bapi/defi/v1/public/wallet-direct/buw/wallet/cex/alpha/all/token/list",
+  "proxy_used": "none"
+}

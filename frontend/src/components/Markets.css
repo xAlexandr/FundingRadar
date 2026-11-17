@@ -1,0 +1,131 @@
+/* Markets.css — уникальные классы: all prefixed with markets- */
+
+.markets-page {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background: transparent;
+  color: #e6f6f8;
+}
+
+.markets-section {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.markets-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  text-align: center;
+  color: #eaf7fb;
+}
+
+.markets-subtitle {
+  text-align: center;
+  color: #9fbfc6;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* table wrapper to allow horizontal scroll on small screens without breaking layout */
+.markets-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 10px;
+}
+
+/* base table */
+.markets-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px; /* keep columns readable; wrapper will scroll on tiny screens */
+  background: rgba(255,255,255,0.02);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+.markets-table thead {
+  background: rgba(255,255,255,0.04);
+}
+
+.markets-table th {
+  text-align: left;
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #cdebef;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.markets-table td {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #e6f6f8;
+  border-top: 1px solid rgba(255,255,255,0.02);
+  vertical-align: middle;
+}
+
+/* name cell layout */
+.markets-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.markets-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.02);
+  padding: 4px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+.markets-logo-fallback {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #1e8fbf, #066b6b);
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.markets-name-text {
+  font-weight: 600;
+  color: #eaf7fb;
+}
+
+/* hover row */
+.markets-row:hover {
+  background: rgba(255,255,255,0.02);
+  transition: background 0.18s ease;
+}
+
+/* responsive adjustments */
+@media (max-width: 860px) {
+  .markets-table {
+    min-width: 640px;
+  }
+  .markets-logo {
+    width: 32px;
+    height: 32px;
+  }
+  .markets-table th, .markets-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 520px) {
+  /* allow horizontal scroll but reduce min-width */
+  .markets-table {
+    min-width: 540px;
+  }
+  .markets-title {
+    font-size: 20px;
+  }
+}

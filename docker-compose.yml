@@ -1,0 +1,327 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: my_mysql
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./dump_structure.sql:/docker-entrypoint-initdb.d/dump_structure.sql
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 500M
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 500M
+
+  mongodb:
+    image: mongo:6
+    restart: unless-stopped
+    command: mongod --wiredTigerCacheSizeGB 6.5
+    volumes:
+      - mongo_data:/data/db
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '1.1'
+          memory: 7000M
+
+  django-app:
+    build:
+      context: .
+      dockerfile: Dockerfile_django
+    command: python AutoStart.py
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    expose:
+      - "8000"
+    volumes:
+      - static_volume:/app/django_static
+    depends_on:
+      - mysql
+      - redis
+      - mongodb
+    env_file:
+      - .env
+    networks:
+      - default
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 2000M
+
+  tgbot:
+    build:
+      context: .
+      dockerfile: Dockerfile_bot
+    command: python funding_bot/CryptoTGbot.py
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    depends_on:
+      - mysql
+      - redis
+      - mongodb
+    env_file:
+      - .env
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1400M
+
+  nginx:
+    container_name: nginx_proxy
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    build:
+      context: .
+      dockerfile: Dockerfile_nginx
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/webroot:/var/www/letsencrypt
+      - ./nginx/certs:/etc/nginx/certs
+      - static_volume:/app/django_static
+    ports:
+      - "80:80"
+      - "8443:8443"
+    depends_on:
+      - django-app
+    networks:
+      - default
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 500M
+    env_file:
+      - frontend/.env
+
+  funding_aggregator:
+    build:
+      context: .
+      dockerfile: Dockerfile_bot
+    command: python funding_bot/aggregator.py
+    restart: always
+    volumes:
+      - .:/app
+      - sockets_volume:/app/sockets
+    environment:
+      - SOCKET_PATH=/app/sockets/funding.sock
+    depends_on:
+      - mysql
+      - redis
+      - mongodb
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 600M
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+
+  funding_bybit:
+    build:
+      context: .
+      dockerfile: Dockerfile_bot
+    command: python funding_bot/collectors/bybit.py
+    restart: always
+    volumes:
+      - .:/app
+      - sockets_volume:/app/sockets
+    environment:
+      - SOCKET_PATH=/app/sockets/funding.sock
+    depends_on:
+      - redis
+      - mongodb
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 300M
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+
+  funding_kucoin:
+    build:
+      context: .
+      dockerfile: Dockerfile_bot
+    command: python funding_bot/collectors/kucoin.py
+    restart: always
+    volumes:
+      - .:/app
+      - sockets_volume:/app/sockets
+    environment:
+      - SOCKET_PATH=/app/sockets/funding.sock
+    depends_on:
+      - redis
+      - mongodb
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 300M
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+
+  funding_dexscreener:
+    build:
+      context: .
+      dockerfile: Dockerfile_bot
+    command: python funding_bot/collectors/dexscreener.py
+    restart: always
+    volumes:
+      - .:/app
+      - sockets_volume:/app/sockets
+    environment:
+      - SOCKET_PATH=/app/sockets/funding.sock
+    depends_on:
+      - redis
+      - mongodb
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.6'
+          memory: 600M
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+
+  funding_gateio_contracts:
+    build:
+      context: .
+      dockerfile: Dockerfile_bot
+    command: python funding_bot/collectors/gateio_to_dex_contracts.py
+    restart: always
+    volumes:
+      - .:/app
+      - sockets_volume:/app/sockets
+    environment:
+      - SOCKET_PATH=/app/sockets/funding.sock
+    depends_on:
+      - redis
+      - mongodb
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 150M
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+
+  funding_binance_alpha:
+    build:
+      context: .
+      dockerfile: Dockerfile_bot
+    command: python funding_bot/collectors/binance_alpha_to_dex_contracts.py
+    restart: always
+    volumes:
+      - .:/app
+      - sockets_volume:/app/sockets
+    environment:
+      - SOCKET_PATH=/app/sockets/funding.sock
+    depends_on:
+      - redis
+      - mongodb
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 150M
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+
+  service_go:
+    build:
+      context: .
+      dockerfile: Dockerfile_service_go
+    container_name: service_go
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '1.7'
+          memory: 1500M
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+
+volumes:
+  mysql_data:
+  mongo_data:
+  static_volume:
+  sockets_volume:
+
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1450

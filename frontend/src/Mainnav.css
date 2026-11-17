@@ -1,0 +1,337 @@
+/* mainnav.css (обновлённый) */
+
+/* Layout container */
+.mainnav-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #243036;
+  color: #c2c2c2;
+}
+
+/* Header (фиксированный сверху, справа от сайдбара на десктопе) */
+.mainnav-header {
+  position: fixed;
+  top: 0;
+  left: 260px;           /* смещение от левого края равное ширине сайдбара */
+  right: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  z-index: 850;
+  padding: 0;
+  background: transparent; /* можно сделать слегка тёмным: rgba(36,48,54,0.6) */
+}
+
+.mainnav-header-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* бургер справа */
+}
+
+/* На мобилке хедер растягиваем на весь экран */
+@media (max-width: 980px) {
+  .mainnav-header { left: 0; }
+}
+
+/* Sidebar */
+.mainnav-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background: #1e282e;
+  overflow-y: auto;
+  transition: transform 0.32s cubic-bezier(.2,.9,.2,1), box-shadow .2s;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 14px;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.35);
+}
+.mainnav-sidebar { padding-bottom: 20px; } /* чтобы не прилипали к краю */
+/* моб. состояние (по умолчанию скрыт) */
+@media (max-width: 980px) {
+  .mainnav-sidebar {
+    transform: translateX(-100%);
+    will-change: transform;
+  }
+  .mainnav-sidebar.open {
+    transform: translateX(0);
+  }
+  
+}
+
+/* brand */
+.mainnav-brand { display:flex; align-items:center; gap:10px; margin-bottom: 6px; }
+.mainnav-logo { font-size:18px; color:#1994bd; }
+.mainnav-title { color:#cfeffb; font-weight:700; font-size:16px; }
+
+/* nav list */
+.mainnav-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 6px; /* можно чуть уменьшить отступ */
+  border-top: 1px solid rgba(25,148,189,0.08);
+}
+/* link base */
+.mainnav-link, .mainnav-link--toggle {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:8px;
+  text-decoration:none;
+  color:#c2c2c2;
+  background: transparent;
+  border: none;
+  cursor:pointer;
+  transition: background .18s ease, color .18s ease, transform .08s;
+  font-size:15px;
+  width:100%;
+}
+
+/* left part inside link (icon+text) */
+.mainnav-link-left { display:flex; align-items:center; gap:10px; flex:1; }
+.mainnav-link-text { display:inline-block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* hover & active */
+.mainnav-link:hover { background: rgba(25,148,189,0.06); color:#eaf7fb; }
+.mainnav-link--active, .mainnav-link--active:hover {
+  background: linear-gradient(90deg,#1994bd,#126783);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(18,103,131,0.12);
+}
+
+/* chevron */
+.mainnav-chevron { color:#c2c2c2; transform: rotate(0deg); transition: transform .18s ease; }
+.mainnav-link--toggle.open .mainnav-chevron { transform: rotate(180deg); }
+
+/* submenu */
+.mainnav-submenu { max-height: 0; overflow: hidden; transition: max-height .22s ease, opacity .16s; opacity:0; display:flex; flex-direction:column; gap:6px; margin-left:8px; margin-top:6px; }
+.mainnav-submenu.open { max-height: 320px; opacity:1; }
+
+/* sublink */
+.mainnav-sublink { padding:8px 12px; border-radius:6px; text-decoration:none; color:#c2c2c2; font-size:14px; transition: background .12s ease; }
+.mainnav-sublink:hover { background: rgba(255,255,255,0.03); color:#eaf7fb; }
+.mainnav-sublink--active { background: rgba(25,148,189,0.12); color:#fff; }
+
+/* bottom area — закрепляем внизу */
+.mainnav-bottom {
+  margin-top: auto;            /* отталкивает вверх, гарантирует нахождение внизу */
+  padding-top: 12px;
+  padding-bottom: 12px;        /* отступ от низа */
+  border-top: 1px solid rgba(18,103,131,0.06);
+  display:flex;
+  flex-direction: column;      /* RU/EN сверху, версия под ними */
+  align-items: center;
+  gap: 8px;
+}
+
+/* lang buttons */
+.mainnav-lang { display:flex; gap:8px; }
+.mainnav-lang-btn {
+  background:#243036;
+  color:#c2c2c2;
+  padding:6px 10px;
+  border-radius:6px;
+  border:1px solid rgba(18,103,131,0.18);
+  cursor:pointer;
+  transition: background .12s;
+  font-weight:600;
+  font-size:13px;
+}
+.mainnav-lang-btn.active { background: linear-gradient(90deg,#1994bd,#126783); color:#fff; }
+
+/* version text */
+.mainnav-copy { color:#99bfc9; font-size:12px; }
+
+/* Контент */
+.mainnav-content {
+  margin-left: 260px;
+  padding: 0px 0px 22px 0px; /* верхний паддинг под фикс хедер */
+  transition: margin-left .2s;
+  flex: 1;
+  min-width: 0;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+/* No bottom navbar on LayoutWeb pages — remove bottom padding */
+.no-bottom-navbar .mainnav-content {
+  padding-bottom: 0;
+}
+
+/* Скрываем overlay по умолчанию, включаем на мобилке */
+.mainnav-overlay { display:none; }
+@media (max-width: 980px) {
+  .mainnav-overlay {
+    display:block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    opacity: 0;
+    transition: opacity .2s ease;
+    pointer-events: none;
+    z-index: 880;
+  }
+  .mainnav-overlay.visible { opacity: 1; pointer-events: auto; }
+  .mainnav-content { margin-left: 0; padding-top: 0px; }
+}
+
+
+/* по умолчанию (десктоп) — скрыт */
+.mainnav-burger {
+  display: none;                /* скрыт на больших экранах */
+  position: absolute;
+  right: 16px;
+  top: 32px;
+  transform: translateY(-50%);
+  width: 44px;                  /* зона нажатия */
+  height: 44px;
+  padding: 8px;
+  border-radius: 10px;
+  background: rgba(32,41,45,0.08); /* ещё более лёгкий фон */
+  border: 1px solid rgba(18,103,131,0.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: background .12s ease, transform .12s ease, box-shadow .12s;
+  z-index: 1600;
+  -webkit-tap-highlight-color: transparent;
+  overflow: visible; /* на всякий случай */
+}
+/* Важно: явное направление колонка — иначе полоски в ряд */
+.mainnav-burger { flex-direction: column; gap: 4px; }
+/* линии (палочки) */
+/* линии (палочки) — базовые */
+.mainnav-burger-line {
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #1390a6, #1994bd);
+  transition: transform .22s cubic-bezier(.2,.9,.2,1), opacity .18s ease;
+  transform-origin: center;
+  display: block;
+}
+
+/* ===== Показываем и анимируем бургер ТОЛЬКО на мобильных/узких экранах ===== */
+@media (max-width: 980px) {
+  .mainnav-burger {
+    display: inline-flex;                /* показываем здесь — не раньше */
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;              /* чтобы полоски были вертикально */
+    gap: 4px;
+    /* сделаем фон чуть менее заметным на мобилке */
+    background: rgba(32,41,45,0.12);
+    border: 1px solid rgba(18,103,131,0.12);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  }
+
+  .mainnav-burger:hover { background: rgba(32,41,45,0.18); transform: translateY(-50%) scale(1.02); }
+
+  /* анимация в крестик */
+  .mainnav-burger.is-open .mainnav-burger-line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .mainnav-burger.is-open .mainnav-burger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0.2);
+  }
+  .mainnav-burger.is-open .mainnav-burger-line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+}
+
+/* icon color */
+.mainnav-icon { color: #c2c2c2; width:18px; height:18px; }
+
+/* Акцент на активный значок */
+.mainnav-link--active .mainnav-icon { filter: drop-shadow(0 0 8px rgba(25,148,189,0.3)); }
+
+/* фокус/hover — чтобы было чуть заметнее и доступно (кнопка выделяется) */
+.mainnav-burger:hover {
+  transform: translateY(-50%) scale(1.02);
+}
+.mainnav-burger:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(25,148,189,0.08);
+}
+/* если нужно, уменьшим padding хедера на мобилке, чтобы бургер не прятался */
+@media (max-width: 480px) {
+  .mainnav-burger { right: 10px; width:40px; height:40px; }
+  .mainnav-burger-line { width:16px; }
+}
+/* На очень узких экранах чуть уменьшим размеры, чтобы не лезло за край */
+/* маленькие экраны — чуть поднажать размеры */
+@media (max-width: 420px) {
+  .mainnav-burger { right: 8px; width: 40px; height: 40px; padding: 6px; }
+  .mainnav-burger-line { width: 16px; }
+}
+
+/* === ЛОГОТИП В САЙДБАРЕ === */
+.mainnav-logo-container {
+  display: flex;
+  justify-content: center;     /* по центру горизонтально */
+  align-items: center;         /* и по вертикали */
+  margin: 10px 0 20px 0;       /* отступ сверху и снизу */
+  padding-top: 10px;
+}
+
+.mainnav-logo-img {
+  width: 120px;                /* подбери под размер твоего SVG */
+  height: auto;
+  opacity: 0.92;               /* чуть прозрачности, чтобы вписывался в фон */
+  filter: drop-shadow(0 0 6px rgba(25,148,189,0.3));
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.mainnav-logo-img:hover {
+  transform: scale(1.05);
+  opacity: 1;
+  filter: drop-shadow(0 0 10px rgba(25,148,189,0.5));
+}
+.mainnav-logo-img {
+  transform: scale(0.95);
+  opacity: 0;
+  animation: logoFadeIn 0.6s ease forwards 0.1s;
+}
+
+@keyframes logoFadeIn {
+  to { transform: scale(1); opacity: 1; }
+}
+
+
+#sweepGroup {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: sweep-rotate 2.6s linear infinite;
+}
+
+.blip {
+  transform-origin: center;
+  animation: blip-pulse 1.6s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+#b1 { animation-delay: 0s;    animation-duration: 1.6s; }
+#b2 { animation-delay: 0.28s; animation-duration: 1.45s; }
+#b3 { animation-delay: 0.55s; animation-duration: 1.7s; }
+#b4 { animation-delay: 0.8s;  animation-duration: 1.35s; }
+#b5 { animation-delay: 1.05s; animation-duration: 1.25s; }
+
+@keyframes sweep-rotate {
+  from { transform: rotate(30deg); }
+  to   { transform: rotate(390deg); }
+}
+
+@keyframes blip-pulse {
+  0%   { transform: scale(0.82); opacity: 0.6; }
+  40%  { transform: scale(1.12); opacity: 1; }
+  100% { transform: scale(0.82); opacity: 0.6; }
+}

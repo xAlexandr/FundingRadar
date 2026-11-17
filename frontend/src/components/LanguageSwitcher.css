@@ -1,0 +1,19 @@
+.lang-switcher {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #126783;
+  background: #243036;
+  color: #c2c2c2;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s;
+  min-width: 36px;
+  text-align: center;
+}
+
+.lang-switcher:hover {
+  background: linear-gradient(145deg, #1994bd, #126783);
+  color: #fff;
+  border-color: #1994bd;
+}

@@ -1,0 +1,636 @@
+/* --- Поиск монеты --- */
+.spreads-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.spreads-search-input {
+  padding: 8px 32px 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #126783;
+  background: #1c262b;
+  color: #c2c2c2;
+  font-size: 14px;
+  width: 180px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.spreads-search-input::placeholder {
+  color: #888;
+}
+.spreads-search-input:focus {
+  border-color: #1994bd;
+}
+.spreads-search-clear {
+  position: absolute;
+  right: 6px;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.spreads-search-clear:hover {
+  color: #fff;
+}
+.spreads-search-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #126783;
+  border-top: 2px solid #1994bd;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* Контейнер главной страницы */
+.spread-container {
+    position: relative;
+    min-height: 200px; /* чтобы не схлопывалось */
+    
+    margin: 0px auto 0px auto;
+    padding: 20px;
+    background: #243036;
+    border-radius: 10px;
+    text-align: center;
+    overflow: hidden;
+}
+/* Переключатель Futures / Spot */
+
+.mode-btn:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.mode-btn:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.mode-btn.active {
+  background: linear-gradient(145deg, #1994bd, #126783);
+  color: #fff;
+}
+/* Лоадер поверх контента */
+.spreads-loader {
+  position: absolute;  /* поверх */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 4px solid #2C2F33;
+  border-top: 4px solid #1994bd;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 0.8s linear infinite;
+  z-index: 2000;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+/* --- Переключатель Futures / Spot внизу --- */
+.mode-switch-bottom {
+  position: fixed;
+  bottom: 95px; /* было 60px — подними выше */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  width: 80%;
+  max-width: 400px;
+  border: 1px solid #126783;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 1100; /* больше чем у navbar, чтобы перекрывать */
+}
+
+.mode-switch-bottom .mode-btn {
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+  background: #243036;
+  color: #c2c2c2;
+  border: none;
+  cursor: pointer;
+}
+.mode-switch-bottom .mode-btn.active {
+  background: linear-gradient(145deg, #1994bd, #126783);
+  color: #fff;
+}
+
+/* Фильтры */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+
+.filter-group {
+  display: flex;
+}
+
+.filter-btn {
+  padding: 8px 14px;
+  border: 1px solid #126783;
+  background: #243036;
+  color: #c2c2c2;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-btn:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.filter-btn:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.filter-btn.active {
+  background: linear-gradient(145deg, #1994bd, #126783);
+  color: #fff;
+}
+
+/* Вход > 0 */
+.entry-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #126783;
+  background: #243036;
+  color: #c2c2c2;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.entry-btn.active {
+  background: #22c057;
+  color: #fff;
+}
+
+/* Кнопки кол-ва элементов */
+.items-selector {
+  display: flex;
+  gap: 5px;
+}
+
+.items-btn {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #126783;
+  background: #243036;
+  color: #c2c2c2;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+.items-btn.active {
+  background: #1994bd;
+  color: #fff;
+}
+
+/* Auto */
+.auto-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #126783;
+  background: #243036;
+  color: #c2c2c2;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.auto-btn.active {
+  background: linear-gradient(145deg, #1994bd, #126783);
+  color: #fff;
+}
+
+/* --- Пагинация компактная --- */
+.spreads-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin: 15px 0 150px; /* место под футер и переключатель */
+  flex-wrap: wrap;
+}
+.page-btn {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #126783;
+  background: #243036;
+  color: #c2c2c2;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+.page-btn.active {
+  background: #1994bd;
+  color: #fff;
+}
+.dots {
+  color: #888;
+  padding: 0 4px;
+  width: 20px;
+  text-align: center;
+}
+
+/* --- Кнопки спредов --- */
+.spreads-content {
+  margin: 0 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.spread-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px;
+  margin: 6px 5px;
+  border-radius: 10px;
+  border: 1px solid #126783;
+  background: #243036;
+  color: #c2c2c2;
+  font-size: 16px;
+  cursor: pointer;
+  width: calc(100% - 10px);
+  transition: all 0.2s;
+}
+.spread-card:hover {
+  background: #2e3d44;
+}
+.spread-card.clickable {
+  background: linear-gradient(145deg, #243036, #1c262b);
+}
+
+
+/* --- Компактный вывод для 3-го этапа (вертикально, улучшенный) --- */
+.id-details {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* расстояние между карточками */
+  margin-top: 20px;
+  padding-bottom: 150px;
+}
+.id-details .market-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* распределяем содержимое */
+  padding: 18px 20px;
+}
+/* Карточки LONG/SHORT и Spread для 3-го этапа */
+.id-details .market-card,
+.id-details .spread-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  background: #2c2c3e;
+  padding: 18px 20px; /* увеличенный padding */
+  border-radius: 12px;
+  color: #fff;
+  width: 95%;
+  max-width: 600px; /* чуть шире на больших экранах */
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 16px;
+  /* line-height: 1.5; */
+  margin: 0 auto;
+  transition: all 0.3s;
+  border: 2px solid #126783; /* подсветка бордера */
+}
+
+.id-details .market-card:hover,
+.id-details .spread-card:hover {
+  border-color: #1994bd; /* подсветка при наведении */
+  background: #2e3d44;
+}
+
+/* Entry / Exit блок */
+.id-details .market-card .entry,
+.id-details .market-card .exit,
+.id-details .spread-card .entry,
+.id-details .spread-card .exit {
+  display: block; /* вывод вертикально */
+  font-weight: 600;
+  font-size: 16px;
+  margin: 4px 0;
+}
+
+.id-details .market-card .entry span,
+.id-details .market-card .exit span,
+.id-details .spread-card .entry span,
+.id-details .spread-card .exit span {
+  color: #22c057; /* Entry — зеленый */
+  font-weight: 700;
+}
+
+.id-details .market-card .exit span,
+.id-details .spread-card .exit span {
+  color: #f44336; /* Exit — красный */
+}
+.market-card h4 {
+  
+  margin-top: auto;
+  margin-bottom: 10px;
+}
+/* Прочий текст внутри карточек */
+.id-details .market-card p,
+.id-details .spread-card p {
+  margin: 4px 0;
+  font-size: 14px;
+  line-height: 1.4;
+  align-self: flex-start;
+}
+
+/* Ссылки */
+.id-details .market-card a {
+  color: #1994bd;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.id-details .market-card a:hover {
+  text-decoration: underline;
+}
+
+/* Индикаторы LONG / SHORT / Spread */
+.id-details .market-card.long {
+  border-left: 5px solid #4caf50;
+}
+
+.id-details .market-card.short {
+  border-left: 5px solid #f44336;
+}
+
+.id-details .spread-card {
+  border-left: 5px solid #ffeb3b;
+}
+/* Ссылка биржи в третьем этапе */
+.id-details .market-link {
+  color: #22c057; /* нежный зеленый для Entry, можно изменить на другой цвет по вкусу */
+  text-decoration: none; /* убираем подчеркивание */
+  font-weight: 700; /* жирнее, чтобы выделялась */
+  transition: all 0.3s;
+}
+
+.id-details .market-link:hover {
+  color: #a0ffb0; /* легкая подсветка при наведении */
+  text-decoration: none;
+}
+/* Кнопка назад для 3-го этапа */
+.id-header {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  margin: 5px auto; /* центрируем и добавляем отступ сверху */
+  padding: 0 10px; /* немного отступов слева и справа */
+  box-sizing: border-box;
+  z-index: 10;
+}
+.spreads-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  margin-bottom: 0px;
+  background: #243036;
+  color: #c2c2c2;
+  border: 1px solid #126783;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+.id-title {
+  margin-top: 0px; /* отступ от кнопок назад/торговля */
+}
+.spreads-back:hover {
+  background: linear-gradient(145deg, #1994bd, #126783);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.spreads-back:active {
+  transform: translateY(0);
+  background: linear-gradient(145deg, #126783, #1994bd);
+}
+.market-name {
+  margin-bottom: auto; /* чтобы текст биржи был прижат к низу */
+}
+.trade-btn {
+  margin-left: auto; /* сдвигает вправо */
+  background: linear-gradient(145deg, #1994bd, #126783);
+  color: #fff;
+  font-size: 16px; /* чуть крупнее */
+  font-weight: 600;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.trade-btn:hover {
+  background: linear-gradient(145deg, #126783, #1994bd);
+  transform: translateY(-2px);
+}
+/* --- Адаптив для мобильных устройств и ПК --- */
+@media (max-width: 768px) {
+  .id-details .market-card,
+  .id-details .spread-card {
+    width: 100%;
+    padding: 16px;
+    font-size: 15px;
+  }
+
+  .id-details .market-card .entry,
+  .id-details .market-card .exit,
+  .id-details .spread-card .entry,
+  .id-details .spread-card .exit {
+    font-size: 15px;
+  }
+
+  .spreads-back {
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .id-details .market-card,
+  .id-details .spread-card {
+    font-size: 18px;
+    padding: 20px 24px;
+    max-width: 650px;
+  }
+
+  .id-details .market-card .entry,
+  .id-details .market-card .exit,
+  .id-details .spread-card .entry,
+  .id-details .spread-card .exit {
+    font-size: 18px;
+  }
+
+  .spreads-back {
+    padding: 14px 24px;
+    font-size: 18px;
+  }
+}
+
+/* Desktop responsiveness for wider screens */
+@media (min-width: 1024px) {
+  .spreads-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 32px;
+  }
+  .filter-bar {
+    gap: 12px;
+    margin-bottom: 20px;
+    margin-top: 24px;
+  }
+  .spreads-search-input {
+    width: 220px;
+    font-size: 15px;
+  }
+  .spread-card {
+    font-size: 16px;
+    padding: 16px 20px;
+    margin: 8px 6px;
+  }
+  .mode-switch-bottom {
+    max-width: 500px;
+  }
+  .mode-switch-bottom .mode-btn {
+    padding: 10px;
+    font-size: 15px;
+  }
+  .id-details .market-card,
+  .id-details .spread-card {
+    max-width: 700px;
+    padding: 20px 24px;
+  }
+  .id-details .market-cards-row {
+    max-width: 700px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .spreads-container {
+    max-width: 1000px;
+    padding: 28px 40px;
+  }
+  .spreads-search-input {
+    width: 260px;
+  }
+  .spread-card {
+    font-size: 17px;
+    padding: 18px 24px;
+  }
+  .id-details .market-card,
+  .id-details .spread-card {
+    max-width: 750px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .spreads-container {
+    max-width: 1100px;
+    padding: 32px 48px;
+  }
+  .spreads-search-input {
+    width: 300px;
+    font-size: 16px;
+  }
+  .spread-card {
+    font-size: 18px;
+    padding: 20px 28px;
+  }
+  .id-details .market-card,
+  .id-details .spread-card {
+    max-width: 800px;
+    font-size: 18px;
+    padding: 22px 28px;
+  }
+}
+
+.page-btn {
+  min-width: 40px; /* минимальная ширина */
+  max-width: 60px; /* максимальная ширина */
+  width: 50px; /* фиксированная ширина, чтобы все были одинаковыми */
+  text-align: center; /* выравнивание текста по центру */
+  white-space: nowrap; /* чтобы текст не переносился */
+  overflow: hidden;
+}
+@media (max-width: 480px) {
+  .page-btn
+ {
+    min-width: 35px;
+    max-width: 45px;
+    width: 40px;
+    font-size: 12px;
+    padding: 10px 0; /* меньше паддинг */
+  }
+
+  .spreads-pagination {
+    flex-wrap: nowrap; /* не переносим кнопки */
+    overflow-x: auto; /* скролл, если не помещаются */
+  }
+}
+@media (max-width: 440px) {
+  .page-btn {
+    min-width: 30px;
+    max-width: 40px;
+    width: 35px;
+    font-size: 12px;
+    padding: 10px 0; /* меньше паддинг */
+  }
+
+
+  .spreads-pagination
+ {
+    flex-wrap: nowrap; /* не переносим кнопки */
+    overflow-x: auto; /* скролл, если не помещаются */
+  }
+}
+/* Ряд LONG + SHORT */
+.id-details .market-cards-row {
+  display: flex;
+  gap: 12px; /* расстояние между карточками */
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  align-items: stretch; /* одинаковая высота карточек */
+}
+
+/* Каждая карточка внутри ряда */
+.id-details .market-cards-row .market-card {
+  flex: 1 1 calc(50% - 6px); /* две карточки в ряд, с учётом gap */
+  display: flex;
+  flex-direction: column; /* сохраняем вертикальное расположение данных */
+  justify-content: flex-start;
+  padding: 18px 20px;
+  box-sizing: border-box;
+  margin: 0; /* убираем внешние отступы */
+}
+
+/* Адаптив на мобилках: вертикально */
+
+/* Перекрываем общий стиль для карточек в ряду */
+.id-details .market-cards-row .market-card {
+  width: auto !important; /* убираем ширину 95% */
+  margin: 0 !important;   /* убираем центрирование */
+}
+.id-details .market-cards-row .market-card .market-name {
+  margin-bottom: 10px; /* или auto только для LONG/SHORT с контентом */
+  margin-top: 0;       /* прижимаем к верху */
+}

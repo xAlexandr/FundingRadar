@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-07-05T11:10:49.040648",
+  "futures_count": 639,
+  "spot_count": 1195,
+  "source": "XT.com API",
+  "futures_endpoint": "https://fapi.xt.com/future/market/v1/public/cg/contracts",
+  "spot_endpoint": "https://sapi.xt.com/v4/public/ticker",
+  "proxy_used": "socks5://127.0.0.1:2080"
+}

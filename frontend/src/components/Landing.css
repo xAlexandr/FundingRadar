@@ -1,0 +1,1940 @@
+/* Landing.css — основная ваша база + исправления для слайдера */
+/* --- добавьте в начало файла, рядом с общими переменными --- */
+/* переменные: масштаб слайдера */
+html, body {
+  overflow-x: hidden; /* запретить горизонтальный скролл */
+}
+/* base box sizing + prevent accidental overflow from paddings */
+html { box-sizing: border-box; }
+.landing *, 
+.landing *::before, 
+.landing *::after {
+  box-sizing: inherit;
+}
+/* удобная стандартная .container — используй её во всех секциях */
+.container {
+  width: 100%;
+  max-width: 1200px;  /* подбирай: 1100/1200/1400 — на твой вкус */
+  margin: 0 auto;
+  padding: 0 24px;    /* вместо процентов — стабильнее */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+/* Safety fix для контейнеров — чтобы не вылезали из экрана */
+.landing, 
+.landing-hero, 
+.landing-benefits, 
+.landing-hero-product {
+  max-width: 100vw; /* не больше ширины экрана */
+  overflow-x: clip; /* современный аналог hidden без побочек */
+  box-sizing: border-box;
+}
+:root{
+  --slider-scale: 1.2;            /* попробуй 1.1 / 1.15 / 1.2 */
+  --slider-base-height: 480px;     /* базовая */
+  --slider-height: calc(var(--slider-base-height) * var(--slider-scale));
+  --landing-banner-height-burger: 80px;
+  --landing-banner-height: 64px;
+  --landing-banner-height-mobile: 64px;
+  --landing-banner-height-xs: 64px;
+  --sidebar-width: 260px;       /* ширина сайдбара (sync с .mainnav-sidebar) */
+}
+
+
+
+/* --- общий контейнер --- */
+.mainnav-content {
+
+  color: #d7e7ea;
+  background: linear-gradient(180deg, #162427, #0f1a1c);
+  box-sizing: border-box;
+}
+.landing {
+  width: 100%;
+}
+/* HERO */
+.landing-hero {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 80px 28px 28px 28px;
+  background: linear-gradient(180deg, rgba(28,42,45,0.95), rgba(18,28,30,0.95));
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.32);
+  flex-wrap: wrap;
+}
+
+/* гибкое распределение колонок — право занимает примерно 30–40% */
+.landing-hero-left {
+  flex: 1 1 60%;
+  min-width: 260px;
+}
+.landing-hero-left h1 { font-size: 34px; color: #eaf7fb; margin-bottom: 10px; }
+.landing-hero-sub { color: #bcd2d7; font-size: 16px; margin-bottom: 14px; max-width: 640px; }
+
+/* features */
+.landing-short-features { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; padding:0; list-style:none; }
+.landing-short-features li { background: rgba(255,255,255,0.03); padding:8px 12px; border-radius:10px; color:#cfeffb; font-weight:700; font-size:13px; }
+
+/* buttons */
+.landing-buttons { display:flex; gap:12px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+.btn-primary { text-decoration: none; background: linear-gradient(90deg,#18a8c9,#117781); border:none; color:#fff; padding:12px 22px; border-radius:12px; font-weight:800; cursor:pointer; box-shadow: 0 8px 20px rgba(17,119,129,0.12); transition: transform .14s, box-shadow .14s; }
+.btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 36px rgba(17,119,129,0.16); }
+.btn-outline { text-decoration:none; background:transparent; border:1px solid rgba(23,166,199,0.14); color:#9fd6e6; padding:10px 18px; border-radius:12px; cursor:pointer; transition: transform .12s; }
+.btn-outline:hover { transform: translateY(-2px); background: rgba(26,158,199,0.06); }
+
+/* support */
+.landing-support { margin-top: 18px; max-width: 640px; }
+.landing-support h4 { color: #dff6fb; margin-bottom:6px; }
+.landing-support p { color:#bcd2d7; margin:0; }
+
+/* SLIDER: контейнер справа */
+.landing-hero-right { flex: 0 0 230px; max-width:520px; min-width:320px; position:relative; border-radius:12px; overflow:visible; }
+
+/* loading placeholder */
+.slider-loading { height:420px; display:flex; align-items:center; justify-content:center; color:#9fbfc6; background:linear-gradient(180deg,#071011,#041011); border-radius:10px; }
+
+/* --- слайдер --- */
+.slider-viewport {
+  width:100%;
+  height: var(--slider-height);
+  overflow:hidden;
+  border-radius:12px;
+  background: linear-gradient(180deg,#071011,#041011);
+  box-shadow:0 8px 26px rgba(0,0,0,0.45);
+  position:relative;
+}
+
+/* track и слайды: ensure slides fill height */
+.slider-track {
+  display:flex;
+  height:100%;
+  transition: transform 600ms cubic-bezier(.22,.9,.25,1);
+  will-change: transform;
+  -webkit-transform: translate3d(0,0,0);
+  transform-style: preserve-3d;
+}
+
+.slider-slide {
+  width:100%;
+  flex:0 0 100%;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  height:100%;               /* ВАЖНО: гарантируем, что slide растянут по высоте */
+  box-sizing:border-box;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* caption */
+.slide-caption {
+  padding:12px 14px;
+  font-weight:700;
+  color:#eaf7fb;
+  background: linear-gradient(90deg, rgba(24,128,146,0.08), rgba(20,80,95,0.03));
+  border-bottom:1px solid rgba(255,255,255,0.02);
+}
+
+.slide-image-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+  background: linear-gradient(180deg,#071011,#041011);
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+/* изображение: сохраняем aspect ratio, не растягиваем по ширине, заполняем вертикаль */
+.slide-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;       /* растянуть по ширине слайдера */
+  height: auto;      /* сохраняем пропорции */
+  object-fit: cover; /* можно оставить contain, если не хочешь обрезать */ 
+  display:block;
+  opacity: 0;
+  transition: opacity .36s ease-in-out, transform .36s;
+  border-radius: 0;
+  box-shadow:0 6px 18px rgba(0,0,0,0.45);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  /* safety: prevent flex children shrink issues */
+  flex-shrink: 0;
+}
+
+/* when loaded, fade in */
+.slide-image.loaded { opacity: 1; }
+
+/* preload hidden fallback if needed (keeps layout unaffected) */
+.preload-img {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* dots */
+.slider-dots { display:flex; gap:8px; justify-content:center; padding:12px 8px; }
+.slider-dot { width:10px; height:10px; background: rgba(255,255,255,0.12); border-radius:50%; border:none; cursor:pointer; transition: transform .12s, background .12s; }
+.slider-dot.active { background: linear-gradient(90deg,#17a6c7,#137a89); transform: scale(1.18); }
+
+/* BENEFITS */
+.landing-benefits { margin-top:50px; }
+.landing-benefits h2 { color:#eaf7fb; font-size:24px; margin-bottom:40px; }
+.benefits-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+.benefit-card { display:flex; gap:14px; align-items:flex-start; padding:14px; background: linear-gradient(180deg,#0e2224,#0b1617); border-radius:12px; box-shadow: 0 10px 24px rgba(0,0,0,0.45); transition: transform .14s, box-shadow .14s; }
+.benefit-card:hover { transform: translateY(-6px); box-shadow: 0 18px 36px rgba(0,0,0,0.5); }
+.benefit-icon { font-size:22px; width:46px; height:46px; display:flex; align-items:center; justify-content:center; background: linear-gradient(90deg,#133e42,#0f2e31); border-radius:10px; color:#cfeffb; box-shadow: inset 0 -6px 12px rgba(0,0,0,0.15); }
+.benefit-body h3 { margin:0 0 6px 0; color:#eaf7fb; font-size:15px; }
+.benefit-body p { margin:0; color:#bcd2d7; font-size:14px; }
+
+/* SEO text block */
+.landing-seo-text { margin-top:16px; padding:14px; border-radius:10px; background: rgba(255,255,255,0.02); color:#bcd2d7; font-size:14px; }
+
+/* CTA */
+.landing-cta { margin-top:24px; padding:22px; border-radius:12px; background: linear-gradient(90deg,#12798a,#19a7c9); text-align:center; color:#fff; }
+.landing-cta h2 { font-size:22px; margin-bottom:8px; }
+.landing-cta p { opacity:0.95; margin-bottom:12px; }
+
+
+
+.landing-hero-product {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 28px;
+  background: linear-gradient(180deg, rgba(28,42,45,0.95), rgba(18,28,30,0.95));
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.32);
+  flex-wrap: wrap;
+}
+
+.landing-hero-product .landing-hero-left { flex: 1 1 60%; min-width: 260px; }
+
+.landing-hero-product .landing-hero-left h1 {
+  font-size: 32px;
+  color: #eaf7fb;
+  margin-bottom: 12px;
+  max-width: 570px;
+}
+
+.landing-hero-product .landing-hero-left p {
+  color: #bcd2d7;
+  font-size: 15px;
+  margin-bottom: 14px;
+  max-width: 570px;
+}
+
+.landing-hero-product .btn-outline {
+  margin-top: 12px;
+  margin-bottom: 16px;
+}
+
+.product-subgrid {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  align-items: flex-start;
+  
+}
+
+.sub-images {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0; /* ❗ изображения не сжимаются */
+}
+
+.sub-images img {
+  width: 250px;
+  height: 300px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+/* вот ключевые изменения тут ↓ */
+.sub-text {
+  flex: 1 1 auto;
+  color: #bcd2d7;
+  font-size: 14px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-left: 16px; /* отступ справа от изображений */
+  min-width: 20vw;
+  max-width: 100%;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+.landing-hero-product .landing-hero-right { flex: 0 0 clamp(220px, 40%, 520px); min-width: 200px; }
+.landing-hero-product .landing-hero-right img { max-width: 100%; height: auto; display:block; }
+
+
+.landing-hero > .container {
+  display: flex;            /* flex внутри контейнера */
+  justify-content: space-between;
+  flex-wrap: wrap;          /* чтобы на маленьких экранах блоки могли перейти вниз */
+  max-width: 1200px;
+margin: 0 auto;
+padding: 0 5%;
+}
+.landing-benefits > .container {
+  max-width: 90%;
+  margin-left: 5%;
+}
+.landing-hero-product > .container {
+  display: flex;            /* flex внутри контейнера */
+  justify-content: space-between;
+  flex-wrap: wrap;          /* чтобы на маленьких экранах блоки могли перейти вниз */
+  max-width: 1200px;
+margin: 0 auto;
+padding: 0 5%;
+}
+
+
+
+@media (max-width:1500px) {
+.product-subgrid {
+    flex-wrap: wrap; /* на мобильных можно вернуть wrap */
+  }
+  .sub-text {
+    padding-left: 0;
+    margin-top: 14px;
+    max-width: 100%;
+  }
+
+  .sub-images {
+    justify-content: center;
+    width: 100%;
+  }
+  
+}
+
+/* responsive */
+@media (max-width:980px) {
+  .landing-hero { padding:18px; gap:16px; margin-top: 64px;}
+  .landing-hero-right { order:-1; width:100%; max-width:100%; }
+  .landing-hero-right {
+    margin: 0 auto;           /* центрируем сам контейнер */
+  }
+
+  .product-subgrid {
+    flex-wrap: wrap; /* на мобильных можно вернуть wrap */
+  }
+
+  .sub-images {
+    flex-direction: column;   /* ❗ изображения одно под другим */
+    align-items: center;      /* центрируем */
+    gap: 16px;                /* отступ между ними */
+  }
+
+  .sub-images img {
+    width: 80%;               /* немного меньше ширины экрана */
+    height: auto;             /* сохраняем пропорции */
+    max-height: 400px;        /* ограничим, чтобы не растягивалось чрезмерно */
+    object-fit: cover;
+  }
+
+  .sub-text {
+    margin-top: 18px;
+    text-align: center;
+    padding-left: 0;
+  }
+
+  .landing-hero > .container {
+
+  max-width: 1200px;
+margin: 0 auto;
+padding: 0 5%;
+}
+.landing-benefits > .container {
+  max-width: 1200px;
+margin: 0 auto;
+padding: 0 5%;
+}
+.landing-hero-product > .container {
+  max-width: 1200px;
+margin: 0 auto;
+padding: 0 5%;
+}
+
+
+}
+@media (max-width:520px) {
+  .landing-hero-left h1 { font-size:20px; }
+}
+/* Ещё меньше — экран до 420px */
+@media (max-width: 420px) {
+  .slider-viewport {
+    width: 80%;
+    max-width: 250px;         /* уменьшаем ширину */
+    width: 250px !important;
+    height: calc(var(--slider-height) * 0.8);  /* пропорционально уменьшаем высоту */
+    margin: 0 auto !important;
+  }
+  .slide-image {
+    object-fit: contain;      /* чтобы не обрезалось сильно */
+  }
+
+  .slide-caption {
+    font-size: 13px;          /* чуть меньше текста */
+    padding: 8px 10px;
+  }
+
+    .landing-hero > .container {
+
+  max-width: 98%;
+  margin-left: 1%;
+}
+.landing-benefits > .container {
+  max-width: 98%;
+  margin-left: 1%;
+}
+.landing-hero-product > .container {
+  max-width: 98%;
+  margin-left: 1%;
+}
+/* Центрируем точки под слайдером */
+  .slider-dots {
+    justify-content: flex-start !important;
+    align-items: center;
+    width: 100%;
+    margin-left: 35%;
+    padding-left: 0;
+    text-align: center;
+  }
+  /* чуть уменьшим заголовок */
+  .landing-hero-left h1 {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  /* немного уменьшаем отступы секции */
+  .landing-hero {
+    padding: 14px;
+    gap: 12px;
+  }
+
+}
+@media (max-width: 370px) {
+  .landing-hero-right {
+    margin-left: -30px !important;
+  }
+}
+
+/* PRICING */
+.landing-pricing {
+  margin-top: 60px;
+  padding: 50px 20px;
+  background: linear-gradient(180deg, rgba(20,35,37,0.96), rgba(10,20,22,0.96));
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.32);
+  text-align: center;
+}
+
+.landing-pricing h2 {
+  color: #eaf7fb;
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+.pricing-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.pricing-card {
+  background: linear-gradient(180deg, #0f1e20, #0b1416);
+  color: #cfeffb;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.45);
+  padding: 28px;
+  width: 340px;
+  text-align: left;
+  position: relative;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.55);
+}
+
+.pricing-card.popular {
+  border: 1px solid rgba(25,166,199,0.7);
+  background: linear-gradient(180deg, #11282b, #0b1618);
+  transform: scale(1.03);
+}
+
+.pricing-card .badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: linear-gradient(90deg, #18a8c9, #117781);
+  color: #fff;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 0 10px rgba(17,119,129,0.5);
+}
+
+.pricing-card h3 {
+  color: #eaf7fb;
+  font-size: 22px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.landing-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #9ba8ad;
+  font-size: 16px;
+}
+
+.new-price {
+  font-size: 34px;
+  font-weight: 800;
+  color: #18a8c9;
+  margin-top: 4px;
+}
+
+.discount {
+  font-size: 14px;
+  color: #fc0;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+.tariff-features {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+  text-align: left;
+}
+
+.tariff-features li {
+  color: #e4e9f0;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 10px 0;
+  padding-left: 28px;
+  position: relative;
+}
+
+.tariff-features li:before {
+  color: #66ffe3;
+  content: "✔";
+  font-weight: 700;
+  left: 0;
+  position: absolute;
+}
+
+.tariff-features li:first-child:before {
+  color: #fc0;
+  content: "⚡";
+}
+
+.tariff-features li:nth-child(4):before {
+  color: #fc0;
+  content: "🔔";
+}
+
+.tariff-features li:nth-child(5):before {
+  content: "📊";
+}
+
+.tariff-features li:nth-child(6):before {
+  content: "🔒";
+}
+
+.tariff-features li:nth-child(7):before {
+  color: #fc0;
+  content: "💬";
+}
+
+.tariff-features li:nth-child(8):before,
+.tariff-features li:nth-child(9):before {
+  color: #fc0;
+  content: "🎁";
+}
+
+.pricing-card .btn-primary {
+  width: 100%;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px 0;
+  margin-top: 10px;
+}
+
+/* адаптивность */
+@media (max-width: 768px) {
+  .pricing-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .pricing-card {
+    width: 90%;
+    max-width: 360px;
+  }
+
+  .landing-pricing h2 {
+    font-size: 24px;
+  }
+
+}
+
+/* 📱 Fix: адаптация карточек тарифов на очень узких экранах */
+@media (max-width: 520px) {
+  .pricing-card {
+    width: 100%;
+    max-width: 320px;        /* ограничим, чтобы помещалось */
+    padding: 22px 16px;      /* уменьшаем внутренние отступы */
+    margin: 0 auto;          /* центрируем */
+    box-sizing: border-box;  /* чтобы padding не добавлял лишней ширины */
+  }
+
+  .pricing-grid {
+    gap: 20px;
+  }
+
+  .pricing-card h3 {
+    font-size: 20px;
+  }
+
+  .new-price {
+    font-size: 28px;
+  }
+
+  .tariff-features li {
+    font-size: 0.9rem;
+    margin: 8px 0;
+  }
+
+  .pricing-card .btn-primary {
+    font-size: 14px;
+    padding: 8px 0;
+  }
+}
+
+/* TESTIMONIALS */
+/* =========================
+   TESTIMONIALS (responsive, swipe-friendly)
+   ========================= */
+.landing-testimonials {
+  margin-top: 60px;
+  padding: 40px 20px;
+  background: linear-gradient(180deg, rgba(16,28,30,0.95), rgba(8,16,18,0.95));
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.32);
+  color: #d7eef2;
+}
+.landing-testimonials h2 {
+  color: #eaf7fb;
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+/* wrapper: centers slider and controls */
+.testimonials-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* viewport: width control (70% desktop -> grows on small screens) */
+.testimonials-viewport {
+  width: 70%;
+  max-width: 1100px;
+  min-width: 280px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, rgba(6,18,19,0.06), rgba(6,12,13,0.03));
+  box-shadow: 0 8px 26px rgba(0,0,0,0.35);
+}
+
+/* track: flexible width = n * 100% */
+.testimonials-track {
+  display: flex;
+  width: 100%;
+  transition: transform 420ms cubic-bezier(.22,.9,.25,1);
+  will-change: transform;
+}
+
+/* each slide sized to viewport width */
+.testimonials-slide {
+  width: 100%;
+  flex: 0 0 100%;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgba(6,18,19,0.10), rgba(6,12,13,0.02));
+  border-radius: 10px;
+}
+
+/* left column */
+.testimonials-left {
+  flex: 0 0 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+}
+.testimonials-image {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.45);
+}
+.testimonials-chat {
+  color: #bdebea;
+  font-weight: 700;
+  font-size: 13px;
+  background: rgba(24,128,146,0.06);
+  padding: 6px 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* right column */
+.testimonials-right {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.testimonials-quote-title {
+  color: #eaf7fb;
+  font-size: 16px;
+  margin: 0 0 10px 0;
+}
+.testimonials-text {
+  color: #cfeef3;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+  max-height: 9.6em;
+  overflow: hidden;
+}
+.testimonials-author {
+  color: #9fcbd0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* nav buttons (prev/next) - positioned on sides of viewport */
+.testimonials-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.22);
+  color: #eaf7fb;
+  border: none;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+}
+.testimonials-nav:hover { transform: translateY(-50%) translateY(-4px); }
+
+/* left/right placement */
+.testimonials-nav.prev { left: calc(15% - 56px); } /* align relative to viewport width: 70% -> 15% left gap */
+.testimonials-nav.next { right: calc(15% - 56px); }
+
+/* dots under slider */
+.testimonials-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+  width: 100%;
+}
+.testimonials-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.12);
+  cursor: pointer;
+}
+.testimonials-dot.active {
+  background: linear-gradient(90deg,#17a6c7,#137a89);
+  transform: scale(1.15);
+}
+
+/* ---------- RESPONSIVE BEHAVIOR ---------- */
+
+/* medium screens: increase slider width to 82% */
+@media (max-width: 1100px) {
+  .testimonials-viewport { width: 82%; }
+  .testimonials-nav.prev { left: calc(9% - 56px); }
+  .testimonials-nav.next { right: calc(9% - 56px); }
+  .testimonials-left { flex: 0 0 140px; }
+  .testimonials-image { width: 130px; height: 130px; }
+}
+
+/* small screens: make slider almost full width and stack columns */
+@media (max-width: 880px) {
+  .testimonials-viewport { width: 92%; }
+  .testimonials-nav.prev { left: 10px; }
+  .testimonials-nav.next { right: 10px; }
+  .testimonials-slide { flex-direction: column; align-items: center; text-align: center; padding: 14px; gap: 12px; }
+  .testimonials-left { flex: 0 0 auto; order: 0; }
+  .testimonials-right { order: 1; }
+  .testimonials-image { width: 140px; height: 140px; }
+  .testimonials-text { max-height: none; } /* allow full text on mobile */
+}
+
+/* very small phones */
+@media (max-width: 420px) {
+  .testimonials-viewport { width: 96%; }
+  .testimonials-image { width: 110px; height: 110px; }
+  .testimonials-quote-title { font-size: 15px; }
+  .testimonials-text { font-size: 13px; line-height: 1.45; }
+  .testimonials-nav { width: 40px; height: 40px; font-size: 24px; }
+}
+
+/* =========================
+   TRIAL CTA (тестовый доступ)
+   ========================= */
+.landing-trial {
+  margin-top: 54px;
+  padding: 38px 20px;
+  background: linear-gradient(180deg, rgba(18,34,36,0.96), rgba(8,16,18,0.96));
+  border-radius: 14px;
+  box-shadow: 0 12px 34px rgba(0,0,0,0.45);
+  color: #d7eef2;
+}
+
+.landing-trial .trial-grid {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  justify-content: space-between;
+  max-width: 1200px;
+margin: 0 auto;
+padding: 0 5%;
+  box-sizing: border-box;
+}
+
+/* left column */
+.trial-left {
+  flex: 1 1 560px;
+  min-width: 280px;
+}
+
+.trial-left h2 {
+  color: #eaf7fb;
+  font-size: 28px;
+  margin: 0 0 50px 0;
+}
+
+.trial-lead {
+  color: #bcd2d7;
+  font-size: 16px;
+  margin: 8px 0 14px 0;
+  max-width: 680px;
+}
+
+.trial-note {
+  color: #cfeff3;
+  font-size: 14px;
+  margin: 0 0 50px 0;
+}
+
+.trial-link {
+  color: #18a8c9;
+  font-weight: 700;
+  text-decoration: none;
+}
+.trial-link:hover { text-decoration: underline; }
+
+/* actions */
+.trial-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.trial-btn {
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 15px;
+  box-shadow: 0 10px 30px rgba(17,119,129,0.12);
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* secondary outline button tweak */
+.trial-outline {
+  padding: 10px 18px;
+  text-decoration: none;
+  border-radius: 12px;
+  border: 1px solid rgba(23,166,199,0.12);
+  background: transparent;
+  color: #9fd6e6;
+  cursor: pointer;
+}
+
+/* right column (image) */
+.trial-right {
+  flex: 0 0 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+}
+
+.trial-image {
+  max-width: 100%;
+  width: 300px;
+  height: auto;
+  border-radius: 12px;
+
+  display: block;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* RESPONIVE: make it tighter & stack on smaller screens */
+@media (max-width: 1100px) {
+  .landing-trial .trial-grid {
+    max-width: 82%;
+    margin-left: 9%;
+    gap: 20px;
+  }
+  .trial-image { width: 260px; }
+}
+
+@media (max-width: 880px) {
+  .landing-trial .trial-grid {
+    max-width: 92%;
+    margin-left: 4%;
+    flex-direction: column-reverse; /* текст сверху, изображение снизу */
+    align-items: center;
+  }
+  .trial-right { margin-bottom: 6px; }
+  .trial-left { text-align: center; }
+  .trial-left h2 { font-size: 22px; }
+  .trial-lead { font-size: 15px; }
+  .trial-actions { justify-content: center; }
+  .trial-image { width: 200px; }
+}
+
+@media (max-width: 420px) {
+  .landing-trial { padding: 24px 12px; }
+  .trial-left h2 { font-size: 20px; }
+  .trial-image { width: 160px; }
+  .trial-btn { padding: 10px 18px; font-size: 14px; }
+}
+
+/* ---------------- AFFILIATE SECTION ---------------- */
+.landing-affiliate {
+  margin-top: 48px;
+  margin-bottom: 48px;
+  background: linear-gradient(180deg, #0e2224, #0b1617);
+  border-radius: 16px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+  padding: 36px 28px;
+  overflow: hidden;
+}
+
+.affiliate-grid {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.affiliate-left {
+  flex: 0 0 280px;
+  max-width: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.affiliate-image {
+  width: 100%;
+  max-width: 250px;
+  border-radius: 14px;
+}
+
+.affiliate-right {
+  flex: 1 1 420px;
+  min-width: 280px;
+}
+
+.affiliate-right h2 {
+  color: #eaf7fb;
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.affiliate-sub {
+  font-size: 17px;
+  color: #9fd6e6;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.affiliate-text {
+  color: #bcd2d7;
+  line-height: 1.55;
+  margin-bottom: 18px;
+  font-size: 15px;
+  max-width: 620px;
+}
+
+.affiliate-right .btn-primary {
+  font-weight: 800;
+  padding: 12px 22px;
+}
+
+/* responsive */
+@media (max-width: 980px) {
+  .affiliate-grid {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  
+  .affiliate-right {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .affiliate-right h2 {
+    font-size: 22px;
+  }
+
+  .affiliate-sub {
+    font-size: 15px;
+  }
+}
+
+/* Добавь после блока affiliate-right или в конец CSS */
+@media (min-width: 981px) {
+  .affiliate-right {
+    text-align: left !important;
+  }
+
+  .affiliate-right h2,
+  .affiliate-right p,
+  .affiliate-text {
+    text-align: left !important;
+  }
+}
+
+/* =========================
+   SOCIALS / FOLLOW CTA
+   ========================= */
+.landing-socials {
+  margin-top: 50px;
+  padding: 38px 20px;
+  background: linear-gradient(180deg, rgba(16,28,30,0.95), rgba(8,16,18,0.95));
+  border-radius: 14px;
+  box-shadow: 0 12px 34px rgba(0,0,0,0.45);
+  color: #d7eef2;
+}
+
+.socials-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 28px;
+  max-width: 1200px;
+margin: 0 auto;
+padding: 0 5%;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.social-left h2 {
+  color: #eaf7fb;
+  font-size: 26px;
+  margin: 0 0 12px 0;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 10px 0 16px 0;
+}
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(24,128,146,0.06), rgba(20,80,95,0.03));
+  border: 1px solid rgba(255,255,255,0.03);
+  color: #cfeff3;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s;
+  min-width: 160px;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.social-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 26px rgba(0,0,0,0.45);
+  background: linear-gradient(90deg, rgba(24,128,146,0.12), rgba(20,80,95,0.06));
+}
+
+.social-icon {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.18);
+  box-shadow: inset 0 -6px 10px rgba(0,0,0,0.12);
+}
+
+.social-label {
+  font-size: 14px;
+  color: #eaf7fb;
+}
+
+/* small helper text */
+.social-sub {
+  margin-top: 6px;
+  color: #bcd2d7;
+  font-size: 14px;
+}
+
+.social-disclaimer {
+  margin-top: 14px;
+  color: #cfeef3;
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0.95;
+  max-width: 720px;
+}
+
+/* right image */
+.social-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-image {
+  max-width: 100%;
+  width: 320px;
+  height: auto;
+  border-radius: 12px;
+  -webkit-user-drag: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .socials-grid {
+    max-width: 84%;
+    margin-left: 8%;
+    grid-template-columns: 1fr 280px;
+  }
+  .social-image { width: 280px; }
+}
+
+@media (max-width: 880px) {
+  .socials-grid {
+    grid-template-columns: 1fr;
+    margin-left: 5%;
+    max-width: 90%;
+    gap: 18px;
+  }
+  /* stack: text first, image below */
+  .social-right { order: 2; }
+  .social-left { order: 1; text-align: center; }
+  .social-disclaimer { max-width: 100%; text-align: left; margin: 0 auto; }
+  .social-buttons { justify-content: center; }
+  .social-image { width: 220px; }
+}
+
+@media (max-width: 420px) {
+  .landing-socials { padding: 20px 12px; }
+  .social-image { width: 160px; }
+  .social-btn { min-width: 140px; padding: 10px; font-size: 13px; }
+  .social-left h2 { font-size: 20px; }
+  .social-disclaimer { font-size: 12.5px; }
+}
+/* 🔧 FIX: Унификация кнопок <a> и <button> */
+a.btn-primary,
+a.btn-outline {
+  display: inline-block;         /* чтобы работали padding и transform */
+  line-height: normal;           /* сброс браузерного line-height */
+  text-align: center;
+  vertical-align: middle;        /* чтобы не “прыгали” относительно текста */
+  text-decoration: none;         /* убираем подчёркивание */
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent; /* без серых бликов на мобилках */
+}
+
+a.btn-primary:hover,
+a.btn-outline:hover {
+  text-decoration: none;         /* чтобы не появлялось подчёркивание при hover */
+}
+
+/* чтобы все кнопки выравнивались одинаково */
+.landing-buttons a,
+.landing-cta a,
+.landing-pricing a,
+.trial-actions a {
+  position: relative;
+  top: 0;
+}
+
+
+/* ключ: позволяем колонкам сжиматься внутри flex-контейнера */
+.landing-hero-left,
+.landing-hero-product .landing-hero-left,
+.trial-left,
+.affiliate-right,
+.social-left {
+  min-width: 0; /* критично для корректного сжатия текста */
+}
+
+/* безопасные изображения: не дадут вылезти за контейнер */
+.landing-hero img,
+.landing-hero-product img,
+.social-image,
+.trial-image,
+.slide-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* уменьшение вертикальных отступов на мобильных */
+@media (max-width: 880px) {
+  .landing-trial { margin-top: 28px; padding: 18px 12px; }
+  .landing-trial .trial-grid { gap: 14px; }
+
+  .landing-socials { margin-top: 18px; padding: 16px 12px; }
+  .socials-grid { gap: 12px; }
+
+  .landing-affiliate { margin-top: 18px; margin-bottom: 18px; padding: 18px; }
+  .affiliate-grid { gap: 14px; }
+}
+
+/* перенос длинных слов/URL */
+.landing, .container, .affiliate-text, .trial-note, .social-disclaimer {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+@media (max-width: 1500px) {
+  /* делаем правую колонку полной ширины и помещаем её первой */
+
+  .landing-hero-product .landing-hero-right {
+    order: -1 !important;           /* обязательно перемещаем вверх */
+    flex: 0 0 100% !important;      /* чтобы заняла всю строку */
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 18px 0 !important;  /* отступ снизу перед текстом */
+    align-self: stretch !important;
+    /* убираем фиксированные min-width, чтобы не мешало сжиматься */
+    min-width: 0 !important;
+  }
+
+  /* Левый столбец занимает всю ширину под картинкой */
+  .landing-hero-left,
+  .landing-hero-product .landing-hero-left {
+    order: 0;
+    flex: 1 1 100%;
+    min-width: 0; /* обязательно, чтобы текст мог переноситься */
+  }
+
+  /* Блоки карточек/изображений внутри правой колонки центрируем */
+  .landing-hero-product .landing-hero-right img,
+  .landing-hero-product .landing-hero-right img {
+    margin: 0 auto;
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ==========================================================
+   1) Центрирование текста в landing-hero-product при <1500px
+   ========================================================== */
+@media (max-width: 1500px) {
+  /* делаем левую колонку продукта центрованной */
+  .landing-hero-product .landing-hero-left {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* центральное выравнивание содержимого */
+    justify-content: center;
+    min-width: 0;           /* для корректного сжатия */
+  }
+
+  /* если внутри есть .sub-text — тоже центрируем */
+  .landing-hero-product .sub-text {
+    text-align: center;
+    justify-content: center;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  /* продуктовая сетка — центрируем элементы (если нужно) */
+  .landing-hero-product .product-subgrid {
+    justify-content: center;
+  }
+
+  /* кнопки и мелкие блоки — центр */
+  .landing-hero-product .landing-buttons,
+  .landing-hero-product .landing-support {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1500px) {
+  /* гарантируем, что .container — flex и может wrap'иться */
+  .landing-hero > .container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: flex-start !important;
+  }
+
+  /* 1) Слайдер (правый блок) — поднять вверх и зафиксировать ширину */
+  .landing-hero > .container > .landing-hero-right {
+    order: -1 !important;                 /* поднимает элемент перед остальными */
+    flex: 0 0 320px;           /* фиксированная базовая ширина (замени 520px если нужно) */
+    width: 320px ;              /* явная ширина */
+    max-width: 100%;           /* не давать вылезать за узкие экраны */
+    min-width: 320px;          /* минимум, как в твоём базовом CSS */
+    margin: 0 auto 20px auto;  /* центрируем горизонтально + отступ снизу */
+    align-self: stretch !important;
+  }
+
+  /* 2) Левый столбец — под слайдером, занимает всю ширину */
+  .landing-hero > .container > .landing-hero-left {
+    order: 0 !important;
+    flex: 1 1 100%;   /* занимает строку под слайдером */
+    min-width: 0 !important;     /* важно для корректного переноса/переноса текста */
+  }
+
+  /* 3) Внутренности слайдера: убедимся, что viewport/изображения не превышают контейнера */
+  .landing-hero > .container > .landing-hero-right .slider-viewport,
+  .landing-hero > .container > .landing-hero-right img {
+    width: 320px ;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+/* На очень узких экранах оставляем стандартное full-width поведение */
+@media (max-width: 980px) {
+  .landing-hero > .container > .landing-hero-right {
+    order: -1 !important;
+    flex: 0 0 100%;
+    width: 100% ;
+    margin: 0 0 16px 0;
+  }
+  .landing-hero > .container > .landing-hero-left {
+    flex: 1 1 100%;
+  }
+}
+
+/* ====== Центрированный баннер на главной ====== */
+.landing-mainnav-hero-image {
+  width: 100%;
+  height: 80px; /* фиксированная высота */
+  display: flex;
+  justify-content: center; /* центрируем содержимое */
+  align-items: center;
+  background: linear-gradient(90deg, #11849e 0%, #005194 100%);
+  overflow: hidden;
+  position: relative;
+
+}
+
+/* сам баннер */
+.landing-mainnav-hero-image img {
+  height: 100%;
+  width: auto;
+  max-width: 1100px;
+  object-fit: contain;
+  display: block;
+}
+
+/* адаптация под мобильные устройства */
+@media (max-width: 768px) {
+  .landing-mainnav-hero-image {
+    height: 64px; /* чуть меньше */
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-mainnav-hero-image {
+    height: 56px; /* ещё меньше на узких экранах */
+  }
+}
+
+/* === Баннер wrapper (сохранить фон/картинку) === */
+.landing-banner-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* сам image: сохраняем aspect-ratio, НЕ растягиваем */
+.landing-mainnav-hero-image {
+  width: 100%;
+  height: 80px; /* как у тебя было */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  
+}
+
+.landing-mainnav-hero-image img {
+  display: block;
+  width: auto !important;        /* НЕ растягивать под 100% */
+  max-width: 1100px;             /* твой ограничитель */
+  max-height: 100%;
+  height: auto !important;
+  object-fit: contain !important; /* сохраняет дизайн */
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* === Оверлей поверх баннера === */
+.banner-overlay-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* текст слева, кнопки справа */
+  padding: 0 clamp(12px, 4.5vw, 48px);
+  gap: 16px;
+  pointer-events: none; /* контейнер не ловит клики, кнопки сами — pointer-events:auto */
+  z-index: 5;           /* ниже header */
+}
+
+/* Левая часть: текст — сдвинут чуть правее на больших экранах и жирнее */
+.banner-left {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  min-width: 0;
+  margin-left: clamp(8px, 3vw, 60px); /* сдвиг вправо на больших экранах */
+  max-width: 45%; /* чтобы не лез в центр */
+}
+
+/* Заголовок: более жирный и выделяющийся */
+.banner-title {
+  color: #0b63b8; /* синий; при желании поменяй на фирменный HEX */
+  font-weight: 900;
+  font-size: clamp(16px, 1.6vw, 22px); /* адаптивный размер */
+  margin: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* подзаголовок — читаем и в стиле */
+.banner-subtitle {
+  margin: 0;
+  color: rgba(234,247,251,0.95);
+  font-size: clamp(12px, 1.2vw, 14px);
+  opacity: 0.95;
+}
+
+/* Правая часть — блок кнопок: НЕ сворачиваем в колонку, всегда в ряд, сжимается */
+.banner-right {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  margin-left: 12px;
+  white-space: nowrap;
+}
+
+/* Общий вид кнопок в баннере */
+.banner-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  font-weight: 800;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  transition: transform .12s ease, box-shadow .12s ease;
+  pointer-events: auto;
+  color: #fff;
+  border: none;
+}
+
+/* Купить — компактная, но текстовая */
+.banner-btn--buy {
+  background: linear-gradient(90deg,#18a8c9,#117781);
+  padding: clamp(6px, 0.8vw, 10px) clamp(10px, 1.2vw, 14px);
+  font-size: clamp(12px, 1.2vw, 14px);
+  line-height: 1;
+  border-radius: 10px;
+}
+
+/* Консультация — по умолчанию текст + иконка.
+   При узких экранах текст скрывается и остаётся только иконка */
+.banner-btn--consult {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.04);
+  padding: clamp(6px, 0.8vw, 10px) clamp(10px, 1vw, 14px);
+  font-size: clamp(12px, 1.2vw, 14px);
+  border-radius: 10px;
+}
+
+/* иконка внутри */
+.consult-icon {
+  width: 18px;
+  height: 18px;
+  color: currentColor;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+/* текст консультации (будет скрываться на мобилках) */
+.consult-text {
+  display: inline-block;
+  line-height: 1;
+}
+
+/* Ховер эффекты */
+.banner-btn--buy:hover,
+.banner-btn--consult:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(0,0,0,0.18); }
+
+/* === RESPONSIVE: при сужении экрана НЕ переносим кнопки под текст === */
+/* Снижаем размеры текста и паддинга, прячем consult-text при очень узких экранах */
+@media (max-width: 980px) {
+  .landing-mainnav-hero-image { height: 64px; }
+  .landing-mainnav-hero-image img { max-width: 900px; }
+
+  .banner-title { font-size: clamp(15px, 2.2vw, 20px); }
+  .banner-subtitle { font-size: clamp(11px, 1.4vw, 13px); }
+
+  .banner-btn--buy { padding: 6px 10px; font-size: 13px; }
+  .banner-btn--consult { padding: 6px 9px; font-size: 13px; }
+}
+
+/* Очень узкие экраны: превращаем consult в икону (скрываем текст),
+   но оставляем кнопки справа в одну линию — они ужимаются */
+@media (max-width: 520px) {
+  .landing-mainnav-hero-image { height: 56px; }
+  .landing-mainnav-hero-image img { max-width: 700px; }
+
+  .banner-title {
+    font-size: 14px;
+    font-weight: 800; /* всё ещё жирный, но меньше */
+  }
+  
+
+  /* Купить — ещё компактнее */
+  .banner-btn--buy {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  /* Превращаем consult в квадратную иконку:
+     скрываем .consult-text, делаем фиксированный размер кнопки */
+  .consult-text { display: none; }
+
+  .banner-btn--consult {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 10px;
+    justify-content: center;
+  }
+  .consult-icon { width: 18px; height: 18px; }
+}
+
+/* Убедимся, что header (бургер) всегда сверху */
+.mainnav-header {
+  position: relative;
+}
+
+/* overlay ниже header */
+.banner-overlay-content { z-index: 5; background: transparent; }
+
+
+/* ===========================
+   FIX: баннер — клики, hover, бургер, контраст текста
+   =========================== */
+
+/* 1) Оверлей не должен мешать кликам по странице и header.
+   Но сами кнопки внутри должны принимать события. */
+.banner-overlay-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(12px, 4.5vw, 48px);
+  gap: 16px;
+
+  /* НЕ ловим клики на контейнере — позволяем пробрасывать клики дальше.
+     Кнопки внутри будут включены отдельно (pointer-events: auto). */
+  pointer-events: none;
+  z-index: 1300; /* ниже, чем фиксированный бургер (будем ставить 1100) */
+  background: transparent;
+}
+
+/* Кнопки внутри оверлея — кликабельны и сохраняют hover/transition */
+.banner-right,
+.banner-left,
+.banner-right .banner-btn,
+.banner-left * {
+  pointer-events: auto;
+  z-index: 1650;
+}
+
+/* 2) Поддерживаем оба варианта классов: banner-btn--consult и banner-btn--icon
+   (внутри проекта используется --icon, а в CSS — --consult). */
+.banner-btn--consult,
+.banner-btn--icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.04);
+  padding: clamp(6px, 0.8vw, 10px) clamp(10px, 1vw, 14px);
+  border-radius: 10px;
+  font-weight: 800;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s;
+}
+
+/* иконка / текст внутри */
+.banner-btn--consult .consult-icon,
+.banner-btn--icon .consult-icon { width:18px; height:18px; flex:0 0 auto; display:inline-block; }
+.banner-btn--consult .consult-text,
+.banner-btn--icon .consult-text { display:inline-block; line-height:1; }
+
+/* hover & focus (восстановим анимацию) */
+.banner-btn--consult:hover,
+.banner-btn--icon:hover,
+.banner-btn--consult:focus,
+.banner-btn--icon:focus {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.18);
+  text-decoration: none;
+  opacity: 1;
+  outline: none;
+}
+.banner-right {
+  margin-right: clamp(12px, 4vw, 84px); /* оставляет место справа для бургера */
+}
+/* 3) На очень узких экранах — прячем текст и делаем кнопку квадратной */
+@media (max-width: 750px) {
+  .banner-btn--consult .consult-text,
+  .banner-btn--icon .consult-text { display: none; }
+
+  .banner-btn--consult,
+  .banner-btn--icon {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 10px;
+  }
+  .banner-btn--consult .consult-icon,
+  .banner-btn--icon .consult-icon { width:18px; height:18px; }
+  .banner-right { margin-right: 0;}
+}
+
+/* 4) Сделаем заголовок и подзаголовок ярче/жёстче на голубом фоне */
+.banner-title {
+  color: #ffffff !important; /* ярче */
+  font-weight: 900 !important;
+  text-shadow: 0 6px 20px rgba(3,7,14,0.55);
+  -webkit-font-smoothing: antialiased;
+}
+
+.banner-subtitle {
+  color: #e9feff !important;
+  font-weight: 700;
+  text-shadow: 0 3px 12px rgba(3,7,14,0.45);
+}
+
+/* Немного увеличим контраст в маленьких размерах тоже */
+@media (max-width: 520px) {
+  .banner-title { font-weight: 900; color: #fff; text-shadow: 0 4px 14px rgba(3,7,14,0.5); }
+  .banner-subtitle { color: #f3ffff; font-weight: 700; }
+}
+@media (max-width: 360px) {
+  .banner-title { font-size: 13px; }
+}
+/* 5) Фиксированный бургер справа и чуть ниже баннера (не меняет layout header).
+   Используем фиксированную позицию для кнопки бургера, чтобы всегда справа. */
+.mainnav-burger {
+  position: fixed !important;
+  right: 18px;
+  top: calc(80px + 12px); /* высота баннера (80px) + небольшой отступ */
+  z-index: 1650 !important;          /* выше большинства элементов, кликабелен */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  background: transparent;
+  border: none;
+}
+
+/* 6) Защита от перекрытия: сдвигаем кнопки баннера немного влево,
+   чтобы фиксированный бургер не накладывался на них на очень широких экранах */
+
+
+/* 7) Убедимся, что ссылки внутри баннера ведут себя как ссылки (a:hover) */
+.banner-right a.banner-btn,
+.banner-left a {
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s;
+  text-decoration: none;
+}
+
+/* дополнительный визуальный фидбек по нажатию */
+.banner-right a.banner-btn:active,
+.banner-left a:active { transform: translateY(0); opacity: .95; }
+
+/* 8) Если где-то остались стили, перекрывающие pointer-events, добавим принудительно */
+.banner-overlay-content * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* --- burger: default (для всех страниц) --- */
+.mainnav-burger {
+  position: fixed;           /* фиксируем, если это вам нужно */
+  right: 18px;
+  top: 12px;                 /* default — старое положение/высота */
+  z-index: 1100;
+  transition: top .18s ease;
+}
+
+/* --- landing page override: чуть ниже баннера (только на главной) --- */
+.mainnav-layout.has-hero-banner .mainnav-burger {
+  /* используем CSS-переменную для высоты баннера, по умолчанию 80px */
+  top: calc(var(--landing-banner-height-burger, 80px) + 12px);
+}
+
+/* адаптивы: если баннер уменьшается на тач-устройствах */
+@media (max-width: 980px) {
+  .mainnav-layout.has-hero-banner .mainnav-burger {
+    top: calc(var(--landing-banner-height-burger, 64px) + 10px);
+  }
+}
+@media (max-width: 520px) {
+  .mainnav-layout.has-hero-banner .mainnav-burger {
+    top: calc(var(--landing-banner-height-burger, 56px) + 8px);
+  }
+}
+
+/* или локально на блок баннера */
+.landing-mainnav-hero-image {
+  height: 80px;
+  --landing-banner-height: 80px;
+}
+@media (max-width: 980px) {
+  .landing-mainnav-hero-image { height: 64px; --landing-banner-height: 64px; }
+}
+@media (max-width: 520px) {
+  .landing-mainnav-hero-image { height: 56px; --landing-banner-height: 56px; }
+}
+
+/* ===== Решение: видимый и кликабельный бургер на главной ===== */
+
+/* 1) На всех страницах убираем негативный z-index (если удалять нельзя — переопределяем ниже) */
+/* УДАЛИТЕ/ЗАКОММЕНТИРУЙТЕ исходное правило `.mainnav-header { z-index: -1 !important; }` */
+
+/* 2) Если не можете удалить старое правило — переопределяем конкретно для landing */
+.mainnav-layout.has-hero-banner .mainnav-header {
+  position: relative;              /* оставляем позиционирование */
+  z-index: 1400 !important;        /* над баннером (баннер/overlay = ~900/1300) */
+}
+
+
+/* 6) Оверлей баннера должен оставаться не захватывающим клики, кнопки внутри — кликабельны */
+.banner-overlay-content { pointer-events: none; z-index: 1300; }
+.banner-overlay-content .banner-right,
+.banner-overlay-content .banner-left,
+.banner-overlay-content .banner-btn { pointer-events: auto; }
+
+/* ===== Конец фикса ===== */
+
+
+/* 1) Фиксируем wrapper баннера в окне */
+.landing-banner-wrapper {
+  position: fixed;
+  top: 0;
+  left:0;
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  height: var(--landing-banner-height);
+  z-index: 1300;          /* под бургером, над остальным контентом */
+  pointer-events: none;   /* контейнер сам не ловит клики (кнопки внутри — да) */
+  background: transparent; /* если нужно, можно тут же добавить backdrop */
+}
+
+/* 2) Внутренний блок с картинкой — пусть остаётся позиционированным */
+.landing-mainnav-hero-image {
+  position: absolute;     /* внутри wrapper — центруем содержимое */
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  pointer-events: none;   /* картинка не кликабельна */
+  background: linear-gradient(90deg, #11849e 0%, #005194 100%);
+}
+
+/* кнопки/overlay должны быть кликабельны */
+.banner-overlay-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(12px, 4.5vw, 48px);
+  gap: 16px;
+  pointer-events: none;   /* сам контейнер не ловит клики */
+  z-index: 1310;
+  background: transparent;
+}
+.banner-overlay-content .banner-right,
+.banner-overlay-content .banner-left,
+.banner-overlay-content .banner-btn {
+  pointer-events: auto;   /* кнопки и их контейнеры кликабельны */
+}
+
+/* 3) Компенсация: сдвигаем основной контент вниз на высоту баннера */
+.mainnav-content {
+  padding-top: calc(var(--landing-banner-height) + 12px);
+  box-sizing: border-box;
+}
+
+/* адаптив: уменьшаем высоту баннера и компенсацию */
+@media (max-width: 980px) {
+  :root { /* Можно не менять; альтернативно задаём локально ниже */ }
+  .landing-banner-wrapper { height: var(--landing-banner-height-mobile); margin-left: 0; width: 100%; }
+  .mainnav-content { padding-top: calc(var(--landing-banner-height-mobile) + 10px); }
+}
+@media (max-width: 520px) {
+  .landing-banner-wrapper { height: var(--landing-banner-height-xs); }
+  .mainnav-content { padding-top: calc(var(--landing-banner-height-xs) + 8px); }
+}
+
+
+/* вариант контейнера-ссылки: отвечает за рамку, округление, overflow */
+.testimonials-image-link {
+  display: inline-block;           /* чтобы можно было задать размер */
+  width: 160px;                    /* синхронизовано с .testimonials-left width */
+  height: 160px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.45);
+  transition: transform .32s cubic-bezier(.2,.9,.25,1), box-shadow .32s;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;                   /* фокус оформим отдельно */
+}
+
+/* картинка внутри — растягиваемся в контейнер, pointer-events: none чтобы a ловил клики */
+.testimonials-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform-origin: 50% 50%;
+  transition: transform .32s cubic-bezier(.2,.9,.25,1);
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none; /* чтобы anchor получал событие клика/hover */
+}
+
+/* Hover / focus эффект — scale и усиление тени */
+.testimonials-image-link:hover,
+.testimonials-image-link:focus {
+  transform: translateY(-4px) scale(1.06);
+  box-shadow: 0 28px 60px rgba(0,0,0,0.55);
+}
+
+/* также можно анимировать сам <img> scale (опционально) */
+.testimonials-image-link:hover .testimonials-image,
+.testimonials-image-link:focus .testimonials-image {
+  transform: scale(1.12);
+}
+
+/* Фокус-контраст для клавиатуры (доступность) */
+.testimonials-image-link:focus {
+  box-shadow: 0 0 0 4px rgba(23,166,199,0.14), 0 20px 44px rgba(0,0,0,0.45);
+}
+
+/* адаптив: на мелких экранах чуть уменьшить размер */
+@media (max-width: 880px) {
+  .testimonials-image-link { width: 140px; height: 140px; }
+}
+@media (max-width: 420px) {
+  .testimonials-image-link { width: 110px; height: 110px; border-radius: 10px; }
+}
+
+.border-img {
+  border-radius: 12px;
+}
